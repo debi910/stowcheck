@@ -11,7 +11,8 @@
       "code_group": 0.48
     },
     "model": "gemma-4-26b-a4b-it",
-    "no_answer": 28
+    "no_answer": 28,
+    "note": "no-answer pairs (API timeouts) re-asked once"
   },
   "rows": [
     {

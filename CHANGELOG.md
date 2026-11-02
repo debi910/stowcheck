@@ -15,3 +15,4 @@
 - First eval run (Gemma 4 26B, free tier, 2026-11-02): Test A baseline 48/100 exact (48/72 answered, 24 too lenient, 28 unparseable/no answer); ours 100/100. Test B UN exact on clear dangerous goods: baseline 66.7%, ours 84.6%; confident misses of dangerous goods: baseline 2, ours 0. Results in eval/results/.
 - Test B scoring split into clear / hard-but-decidable / truly vague items. Gemma 4 run: UN exact on hard items baseline 1/7 vs ours 6/7; vague abstain 4/5 both.
 - API identifies manifest lines in parallel.
+- Re-asked the 28 Test A baseline no-answers: all timed out again (model still thinking after 150 s, 4 tries each, 2 rounds). Final baseline: 48/100 exact, 48/72 of answered, 24 too lenient.
