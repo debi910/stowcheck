@@ -187,7 +187,7 @@ class Rules:
                     hit = True
             if not hit:
                 for g in other_groups:
-                    if re.search(rf"\b{re.escape(g.lower().rstrip('s'))}", low):
+                    if re.search(rf"\b{re.escape(g.lower())}\b", low):
                         hit = True
                         break
             if hit and level > best:
