@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StowCheck</title>
+<style>
+:root{--bg:#f7f7f5;--fg:#1c1c1a;--mut:#6b6b66;--card:#fff;--line:#e3e2dd;--bad:#b42318;--warn:#b54708;--ok:#067647;--acc:#1d4ed8}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ededea;--mut:#a3a39d;--card:#1e1e1c;--line:#33332f;--bad:#f97066;--warn:#fdb022;--ok:#47cd89;--acc:#7aa2ff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:920px;margin:0 auto;padding:24px 16px 64px}h1{margin:0 0 4px;font-size:26px}p.sub{margin:0 0 20px;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+input{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit}
+input.c{max-width:90px}button{font:inherit;padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc)}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid currentColor}
+.violation{color:var(--bad)}.segregate{color:var(--warn)}.ok{color:var(--ok)}.unknown{color:var(--mut)}small,.mut{color:var(--mut)}
+.f{border-left:3px solid currentColor;padding:8px 12px;margin:8px 0;background:var(--bg);border-radius:4px}.f div{color:var(--fg)}
+footer{color:var(--mut);font-size:13px;margin-top:24px}
+</style>
+</head>
+<body><main>
+<h1>StowCheck</h1>
+<p class="sub">Paste a container ship manifest in plain words. AI works out what each cargo really is. Code applies the 49 CFR segregation rules and cites every row. Unsure items are flagged, never guessed.</p>
+<div class="card">
+<table id="t"><thead><tr><th>Cargo description</th><th style="width:100px">Container</th><th style="width:30px"></th></tr></thead><tbody></tbody></table>
+<div class="row"><button onclick="add()">Add line</button><button onclick="sample()">Load sample manifest</button><button class="p" id="go" onclick="run()">Check stowage</button></div>
+</div>
+<div id="out"></div>
+<footer>Rules: US 49 CFR 172.101, 176.83, 176.84 (public domain). Not the IMDG Code. A research demo, not for operational use. Explosives (Class 1) compatibility groups are not modelled.</footer>
+</main>
+<script>
+const tb=document.querySelector('#t tbody');
+function add(d='',c=''){const tr=document.createElement('tr');tr.innerHTML=`<td><input value="${d.replace(/"/g,'&quot;')}" placeholder="e.g. pool chlorine tablets 25kg drums"></td><td><input class="c" value="${c}" placeholder="C1"></td><td><button title="Remove" onclick="this.closest('tr').remove()">×</button></td>`;tb.appendChild(tr)}
+function sample(){tb.innerHTML='';[["Swimming pool chlorine tablets, 25kg drums","MSKU1"],["Car batteries, lead acid, filled with acid","MSKU1"],["Eau de parfum 100ml, alcohol based","MSKU2"],["Hydrogen peroxide 50% technical grade","MSKU2"],["Ammonia, anhydrous UN1005 cylinders","MSKU3"],["Hydrochloric acid 30% industrial cleaner","MSKU4"],["Cotton T-shirts","MSKU4"],["Household cleaning products (assorted)","MSKU5"]].forEach(x=>add(...x))}
+const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+async function run(){const lines=[...tb.querySelectorAll('tr')].map(r=>{const i=r.querySelectorAll('input');return{description:i[0].value.trim(),container:i[1].value.trim()}}).filter(l=>l.description);
+if(!lines.length)return;const b=document.getElementById('go');b.disabled=true;b.textContent='Checking…';
+try{const r=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lines})});const d=await r.json();render(d)}catch(e){document.getElementById('out').innerHTML=`<div class="card violation">Request failed: ${esc(e)}</div>`}
+b.disabled=false;b.textContent='Check stowage'}
+function render(d){const v=d.findings.filter(f=>f.status==='violation').length;
+let h=`<div class="card"><h3 style="margin-top:0">What each cargo is</h3><table><tr><th>#</th><th>Description</th><th>Identified as</th><th>Groups</th></tr>`;
+d.items.forEach(i=>{const s=i.abstain&&!i.un?`<span class="tag unknown">${i.is_dangerous===false?'not dangerous':'not sure: needs a human'}</span>`:(i.identified?esc(i.identified):'<span class="tag ok">not dangerous</span>');
+h+=`<tr><td>${i.line}</td><td>${esc(i.description)}<br><small>${esc(i.container)}</small></td><td>${s}${i.evidence?`<br><small>${esc(i.evidence)}</small>`:''}</td><td><small>${esc((i.groups||[]).join(', '))}</small></td></tr>`});
+h+=`</table></div><div class="card"><h3 style="margin-top:0">Segregation findings: ${v} violation${v===1?'':'s'}</h3>`;
+if(!d.findings.length)h+='<p class="ok">No segregation required between the identified cargoes.</p>';
+d.findings.forEach(f=>{h+=`<div class="f ${f.status}"><span class="tag">${f.status==='violation'?'VIOLATION':f.status==='segregate'?'segregate':'unknown'}</span> <b>${esc(f.a)}</b> ↔ <b>${esc(f.b)}</b><div>${esc(f.requirement||'')}</div><small>${(f.reasons||[]).map(esc).join('<br>')}</small></div>`});
+document.getElementById('out').innerHTML=h+'</div>'}
+sample();
+</script>
+</body></html>
