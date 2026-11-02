@@ -34,7 +34,7 @@ def chat(system: str, user: str, json_mode: bool = True, retries: int = 4) -> st
         body["response_format"] = {"type": "json_object"}
     req = urllib.request.Request(f"{base}/chat/completions", data=json.dumps(body).encode(),
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
-                                          "User-Agent": "stowcheck/0.1"})
+                                          "User-Agent": "Mozilla/5.0 (compatible; stowcheck/0.1)", "Accept": "application/json"})
     for attempt in range(retries):
         try:
             with urllib.request.urlopen(req, timeout=150) as r:

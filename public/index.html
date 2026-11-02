@@ -41,9 +41,11 @@ b.disabled=false;b.textContent='Check stowage'}
 function render(d){const v=d.findings.filter(f=>f.status==='violation').length;
 let h=`<div class="card"><h3 style="margin-top:0">What each cargo is</h3><table><tr><th>#</th><th>Description</th><th>Identified as</th><th>Groups</th></tr>`;
 d.items.forEach(i=>{const s=i.abstain&&!i.un?`<span class="tag unknown">${i.is_dangerous===false?'not dangerous':'not sure: needs a human'}</span>`:(i.identified?esc(i.identified):'<span class="tag ok">not dangerous</span>');
-h+=`<tr><td>${i.line}</td><td>${esc(i.description)}<br><small>${esc(i.container)}</small></td><td>${s}${i.evidence?`<br><small>${esc(i.evidence)}</small>`:''}</td><td><small>${esc((i.groups||[]).join(', '))}</small></td></tr>`});
+h+=`<tr><td>${i.line}</td><td>${esc(i.description)}<br><small>${esc(i.container)}</small></td><td>${s}${i.evidence?`<br><small>${esc(i.evidence)}</small>`:''}${i.error?`<br><small class="violation">AI error: ${esc(i.error)}</small>`:''}</td><td><small>${esc((i.groups||[]).join(', '))}</small></td></tr>`});
+const unk=d.items.filter(i=>!i.un&&i.is_dangerous!==false).length;
 h+=`</table></div><div class="card"><h3 style="margin-top:0">Segregation findings: ${v} violation${v===1?'':'s'}</h3>`;
-if(!d.findings.length)h+='<p class="ok">No segregation required between the identified cargoes.</p>';
+if(unk)h+=`<p class="segregate"><b>Incomplete:</b> ${unk} cargo${unk===1?' is':'es are'} not identified, so this check cannot clear the stowage. A human must confirm ${unk===1?'it':'them'}.</p>`;
+if(!d.findings.length&&!unk)h+='<p class="ok">No segregation required between the identified cargoes.</p>';
 d.findings.forEach(f=>{h+=`<div class="f ${f.status}"><span class="tag">${f.status==='violation'?'VIOLATION':f.status==='segregate'?'segregate':'unknown'}</span> <b>${esc(f.a)}</b> ↔ <b>${esc(f.b)}</b><div>${esc(f.requirement||'')}</div><small>${(f.reasons||[]).map(esc).join('<br>')}</small></div>`});
 document.getElementById('out').innerHTML=h+'</div>'}
 sample();

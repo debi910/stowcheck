@@ -45,6 +45,25 @@ def _identify(description: str) -> dict:
         return {"un_number": None, "abstain": True, "error": str(e)[:200]}
 
 
+@app.get("/api/health")
+def health():
+    import os
+    out = {"groq_key_set": bool(os.getenv("GROQ_API_KEY")), "gemini_key_set": bool(os.getenv("GEMINI_API_KEY")),
+           "model": os.getenv("STOWCHECK_MODEL", "default")}
+    try:
+        from stowcheck.llm import chat
+        out["test_call"] = chat("Reply with JSON {\"ok\": true}", "ping")[:200]
+    except Exception as e:
+        body = ""
+        if hasattr(e, "read"):
+            try:
+                body = e.read().decode()[:300]
+            except Exception:
+                pass
+        out["test_call_error"] = f"{e!r} {body}"[:500]
+    return out
+
+
 @app.get("/")
 def home():
     return FileResponse(Path(__file__).resolve().parent.parent / "public" / "index.html")
@@ -66,7 +85,8 @@ def check(m: Manifest):
                       "identified": entry.cite if entry else None, "un": ident.get("un_number"),
                       "class": entry.hazard_class if entry else None, "groups": ident.get("groups", []),
                       "confidence": ident.get("confidence"), "abstain": ident.get("abstain"),
-                      "is_dangerous": ident.get("is_dangerous"), "evidence": ident.get("evidence", "")})
+                      "is_dangerous": ident.get("is_dangerous"), "evidence": ident.get("evidence", ""),
+                      "error": ident.get("error")})
         if entry:
             cargos.append(Cargo(label=label, un=entry.un, packing_group=entry.packing_group,
                                 groups=ident.get("groups", []), container=ln.container))
