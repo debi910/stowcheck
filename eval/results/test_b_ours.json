@@ -3,12 +3,12 @@
     "mode": "ours",
     "n": 60,
     "dg_detection_clear": 1.0,
-    "un_exact_clear_dg": 0.846,
+    "un_exact_clear_dg": 0.872,
     "un_exact_hard": "6/7",
     "abstain_on_vague": "4/5",
     "missed_dg_confident": 0,
     "model": "gemma-4-26b-a4b-it",
-    "errors": 0
+    "errors": 4
   },
   "rows": [
     {
@@ -17,9 +17,9 @@
       "gold_un": "UN1266",
       "ambiguous": false,
       "pred_dg": true,
-      "pred_un": "NA1987",
+      "pred_un": null,
       "abstain": false,
-      "confidence": 0.7
+      "confidence": 1.0
     },
     {
       "id": "B002",
@@ -59,7 +59,7 @@
       "pred_dg": true,
       "pred_un": "UN1170",
       "abstain": false,
-      "confidence": 0.95
+      "confidence": 1.0
     },
     {
       "id": "B006",
@@ -76,10 +76,10 @@
       "gold_dg": "yes",
       "gold_un": "UN1361",
       "ambiguous": true,
-      "pred_dg": true,
-      "pred_un": "NA1361",
-      "abstain": false,
-      "confidence": 1.0
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
     },
     {
       "id": "B008",
@@ -99,7 +99,7 @@
       "pred_dg": true,
       "pred_un": "UN3150",
       "abstain": false,
-      "confidence": 0.9
+      "confidence": 1.0
     },
     {
       "id": "B010",
@@ -159,7 +159,7 @@
       "pred_dg": true,
       "pred_un": "UN1263",
       "abstain": false,
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "id": "B016",
@@ -177,9 +177,9 @@
       "gold_un": "UN1133",
       "ambiguous": false,
       "pred_dg": true,
-      "pred_un": "UN1287",
+      "pred_un": "UN1133",
       "abstain": false,
-      "confidence": 0.7
+      "confidence": 0.9
     },
     {
       "id": "B018",
@@ -229,7 +229,7 @@
       "pred_dg": true,
       "pred_un": "UN2067",
       "abstain": false,
-      "confidence": 0.9
+      "confidence": 1.0
     },
     {
       "id": "B023",
@@ -339,7 +339,7 @@
       "pred_dg": true,
       "pred_un": "UN3528",
       "abstain": false,
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "id": "B034",
@@ -349,7 +349,7 @@
       "pred_dg": true,
       "pred_un": "UN1386",
       "abstain": false,
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "id": "B035",
@@ -469,7 +469,7 @@
       "pred_dg": true,
       "pred_un": "UN3269",
       "abstain": false,
-      "confidence": 0.85
+      "confidence": 0.9
     },
     {
       "id": "B047",
@@ -579,7 +579,7 @@
       "pred_dg": null,
       "pred_un": null,
       "abstain": true,
-      "confidence": 0.2
+      "confidence": 0.3
     },
     {
       "id": "B058",

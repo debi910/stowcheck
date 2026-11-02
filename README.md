@@ -38,9 +38,9 @@ The answer key comes from the regulation text applied by hand, and that text is 
 | | UN number right (clear DG) | UN number right (hard items) | Dangerous cargo called safe |
 |---|---|---|---|
 | Model alone | 66.7% | 1 / 7 | 2 |
-| **StowCheck** | **84.6%** | **6 / 7** | **0** |
+| **StowCheck** | **87.2%** | **6 / 7** | **0** |
 
-Both arms said "not sure" on 4 of the 5 vague items.
+Both arms said "not sure" on 4 of the 5 vague items, and neither flagged any of the 9 ordinary goods as dangerous. StowCheck numbers use the final prompt; items that hit API timeouts were re-asked once.
 
 ## Limits
 
