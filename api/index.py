@@ -51,6 +51,8 @@ def home():
 
 
 @app.post("/api/check")
+@app.post("/api/index")  # Vercel rewrites every path to the function at /api/index
+@app.post("/")
 def check(m: Manifest):
     from concurrent.futures import ThreadPoolExecutor
     lines = m.lines[:25]

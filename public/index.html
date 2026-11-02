@@ -36,7 +36,7 @@ function sample(){tb.innerHTML='';[["Swimming pool chlorine tablets, 25kg drums"
 const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 async function run(){const lines=[...tb.querySelectorAll('tr')].map(r=>{const i=r.querySelectorAll('input');return{description:i[0].value.trim(),container:i[1].value.trim()}}).filter(l=>l.description);
 if(!lines.length)return;const b=document.getElementById('go');b.disabled=true;b.textContent='Checking…';
-try{const r=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lines})});const d=await r.json();render(d)}catch(e){document.getElementById('out').innerHTML=`<div class="card violation">Request failed: ${esc(e)}</div>`}
+try{const r=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lines})});const d=await r.json().catch(()=>({}));if(!r.ok||!d.findings)throw new Error(`server said ${r.status}: ${JSON.stringify(d.detail||d.error||d).slice(0,200)}`);render(d)}catch(e){document.getElementById('out').innerHTML=`<div class="card violation">Request failed: ${esc(e)}</div>`}
 b.disabled=false;b.textContent='Check stowage'}
 function render(d){const v=d.findings.filter(f=>f.status==='violation').length;
 let h=`<div class="card"><h3 style="margin-top:0">What each cargo is</h3><table><tr><th>#</th><th>Description</th><th>Identified as</th><th>Groups</th></tr>`;
