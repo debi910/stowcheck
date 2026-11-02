@@ -18,10 +18,37 @@ from stowcheck.search import Index  # noqa: E402
 HERE = Path(__file__).parent
 
 
+def score(out, mode, answers=()):
+    clear = [o for o in out if not o["ambiguous"]]
+    clear_dg = [o for o in clear if o["gold_dg"] == "yes"]
+    hard = [o for o in out if o["ambiguous"] and o["gold_un"]]   # ambiguous wording, but a best answer exists
+    vague = [o for o in out if o["ambiguous"] and not o["gold_un"]]  # cannot be decided from the text
+    r = lambda x: round(x, 3)
+    return {
+        "mode": mode, "n": len(out),
+        "dg_detection_clear": r(sum((o["pred_dg"] is True) == (o["gold_dg"] == "yes") for o in clear) / len(clear)),
+        "un_exact_clear_dg": r(sum(o["pred_un"] == o["gold_un"] for o in clear_dg) / len(clear_dg)),
+        "un_exact_hard": f"{sum(o['pred_un'] == o['gold_un'] for o in hard)}/{len(hard)}",
+        "abstain_on_vague": f"{sum(o['abstain'] for o in vague)}/{len(vague)}",
+        "missed_dg_confident": sum(o["gold_dg"] == "yes" and o["pred_dg"] is False and not o["abstain"] for o in out),
+        "model": __import__("os").getenv("STOWCHECK_MODEL", "default"),
+        "errors": sum("error" in a for a in answers),
+    }
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["baseline", "ours"], required=True)
+    ap.add_argument("--rescore", action="store_true", help="recompute the summary from saved rows")
     args = ap.parse_args()
+    if args.rescore:
+        path = HERE / "results" / f"test_b_{args.mode}.json"
+        saved = json.load(open(path))
+        saved["summary"] = {**score(saved["rows"], args.mode), "model": saved["summary"].get("model"),
+                            "errors": saved["summary"].get("errors")}
+        json.dump(saved, open(path, "w"), indent=2)
+        print(json.dumps(saved["summary"], indent=2))
+        return
     rows = list(csv.DictReader(open(HERE / "test_b_descriptions.csv")))
     from stowcheck import llm
     index = Index(Rules()) if args.mode == "ours" else None
@@ -48,18 +75,7 @@ def main():
                     "ambiguous": r["ambiguous"] == "yes", "pred_dg": a.get("is_dangerous"), "pred_un": un,
                     "abstain": bool(a.get("abstain")), "confidence": a.get("confidence")})
         print(r["id"], r["gold_un"], un, a.get("is_dangerous"), "abstain" if a.get("abstain") else "", flush=True)
-    clear = [o for o in out if not o["ambiguous"]]
-    clear_dg = [o for o in clear if o["gold_dg"] == "yes"]
-    vague = [o for o in out if o["ambiguous"]]
-    summary = {
-        "mode": args.mode, "n": len(out),
-        "dg_detection_clear": round(sum((o["pred_dg"] is True) == (o["gold_dg"] == "yes") for o in clear) / len(clear), 3),
-        "un_exact_clear_dg": round(sum(o["pred_un"] == o["gold_un"] for o in clear_dg) / len(clear_dg), 3),
-        "abstain_on_vague": round(sum(o["abstain"] for o in vague) / len(vague), 3),
-        "model": __import__("os").getenv("STOWCHECK_MODEL", "default"),
-        "errors": sum("error" in a for a in answers),
-        "missed_dg_confident": sum(o["gold_dg"] == "yes" and o["pred_dg"] is False and not o["abstain"] for o in out),
-    }
+    summary = score(out, args.mode, answers)
     print(json.dumps(summary, indent=2))
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "results" / f"test_b_{args.mode}.json").write_text(json.dumps({"summary": summary, "rows": out}, indent=2))

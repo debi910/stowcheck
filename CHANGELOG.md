@@ -13,3 +13,5 @@
 - Free model default: gemini-3.5-flash via Gemini OpenAI-compatible API (gemini-2.5 is closed to new keys); longer timeout and retries.
 - Evals now run in parallel; Gemma 4 26B (open model, free tier) used because Gemini flash free tier is 20 requests/day.
 - First eval run (Gemma 4 26B, free tier, 2026-11-02): Test A baseline 48/100 exact (48/72 answered, 24 too lenient, 28 unparseable/no answer); ours 100/100. Test B UN exact on clear dangerous goods: baseline 66.7%, ours 84.6%; confident misses of dangerous goods: baseline 2, ours 0. Results in eval/results/.
+- Test B scoring split into clear / hard-but-decidable / truly vague items. Gemma 4 run: UN exact on hard items baseline 1/7 vs ours 6/7; vague abstain 4/5 both.
+- API identifies manifest lines in parallel.

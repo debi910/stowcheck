@@ -26,6 +26,25 @@ class Manifest(BaseModel):
     lines: list[Line]
 
 
+def _identify(description: str) -> dict:
+    typed = UN_RE.search(description)
+    if typed:
+        un = f"{typed.group(1).upper()}{typed.group(2)}"
+        ident = {"un_number": un, "is_dangerous": True, "confidence": 1.0, "abstain": False, "groups": [],
+                 "evidence": "UN number typed in the description"}
+        try:  # still ask the AI for chemical groups; the engine works without them
+            from stowcheck.llm import identify_grounded
+            ident["groups"] = identify_grounded(description, INDEX).get("groups", [])
+        except Exception:
+            pass
+        return ident
+    try:
+        from stowcheck.llm import identify_grounded
+        return identify_grounded(description, INDEX)
+    except Exception as e:
+        return {"un_number": None, "abstain": True, "error": str(e)[:200]}
+
+
 @app.get("/")
 def home():
     return FileResponse(Path(__file__).resolve().parent.parent / "public" / "index.html")
@@ -33,25 +52,13 @@ def home():
 
 @app.post("/api/check")
 def check(m: Manifest):
+    from concurrent.futures import ThreadPoolExecutor
+    lines = m.lines[:25]
+    with ThreadPoolExecutor(8) as ex:
+        idents = list(ex.map(_identify, [ln.description for ln in lines]))
     items, cargos = [], []
-    for i, ln in enumerate(m.lines[:25]):
+    for i, (ln, ident) in enumerate(zip(lines, idents)):
         label = f"#{i+1} {ln.description[:40]}"
-        typed = UN_RE.search(ln.description)
-        if typed:
-            un = f"{typed.group(1).upper()}{typed.group(2)}"
-            ident = {"un_number": un, "is_dangerous": True, "confidence": 1.0, "abstain": False, "groups": [],
-                     "evidence": "UN number typed in the description"}
-            try:  # still ask the AI for chemical groups; the engine works without them
-                from stowcheck.llm import identify_grounded
-                ident["groups"] = identify_grounded(ln.description, INDEX).get("groups", [])
-            except Exception:
-                pass
-        else:
-            try:
-                from stowcheck.llm import identify_grounded
-                ident = identify_grounded(ln.description, INDEX)
-            except Exception as e:
-                ident = {"un_number": None, "abstain": True, "error": str(e)[:200]}
         entry = RULES.lookup(ident["un_number"], ident.get("packing_group", "")) if ident.get("un_number") else None
         items.append({"line": i + 1, "description": ln.description, "container": ln.container,
                       "identified": entry.cite if entry else None, "un": ident.get("un_number"),

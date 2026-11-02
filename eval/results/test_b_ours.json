@@ -4,10 +4,11 @@
     "n": 60,
     "dg_detection_clear": 1.0,
     "un_exact_clear_dg": 0.846,
-    "abstain_on_vague": 0.333,
+    "un_exact_hard": "6/7",
+    "abstain_on_vague": "4/5",
+    "missed_dg_confident": 0,
     "model": "gemma-4-26b-a4b-it",
-    "errors": 0,
-    "missed_dg_confident": 0
+    "errors": 0
   },
   "rows": [
     {
