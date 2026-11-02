@@ -46,6 +46,7 @@ def _identify(description: str) -> dict:
 
 
 @app.get("/api/health")
+@app.get("/api/index")  # Vercel rewrites every path to /api/index, so GET there is the health check
 def health():
     import os
     out = {"groq_key_set": bool(os.getenv("GROQ_API_KEY")), "gemini_key_set": bool(os.getenv("GEMINI_API_KEY")),
