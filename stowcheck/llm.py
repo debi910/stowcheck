@@ -127,7 +127,10 @@ and candidate rows from the 172.101 table. Pick the single best candidate, or no
 dangerous or the description is too vague to decide. Return JSON:
 {{"choice": <candidate number or null>, "is_dangerous": true|false|null, "confidence": 0.0-1.0,
   "groups": [subset of {GROUPS}], "evidence": "which words in the description support the choice"}}
-Use is_dangerous null and confidence below 0.5 when the description could be several different things."""
+Rules: prefer the entry that names the product itself (e.g. a finished product's own entry) over an entry for
+one of its ingredients. Finished manufactured articles such as clothing, textiles, furniture, tiles or utensils
+are not raw bulk materials: do not match them to raw-material entries. Use is_dangerous null and confidence
+below 0.5 when the description could be several different things."""
 
 
 def identify_grounded(description: str, index, k: int = 6, abstain_below: float = 0.5) -> dict:

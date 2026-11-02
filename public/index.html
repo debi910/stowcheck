@@ -46,7 +46,10 @@ const unk=d.items.filter(i=>!i.un&&i.is_dangerous!==false).length;
 h+=`</table></div><div class="card"><h3 style="margin-top:0">Segregation findings: ${v} violation${v===1?'':'s'}</h3>`;
 if(unk)h+=`<p class="segregate"><b>Incomplete:</b> ${unk} cargo${unk===1?' is':'es are'} not identified, so this check cannot clear the stowage. A human must confirm ${unk===1?'it':'them'}.</p>`;
 if(!d.findings.length&&!unk)h+='<p class="ok">No segregation required between the identified cargoes.</p>';
-d.findings.forEach(f=>{h+=`<div class="f ${f.status}"><span class="tag">${f.status==='violation'?'VIOLATION':f.status==='segregate'?'segregate':'unknown'}</span> <b>${esc(f.a)}</b> ↔ <b>${esc(f.b)}</b><div>${esc(f.requirement||'')}</div><small>${(f.reasons||[]).map(esc).join('<br>')}</small></div>`});
+const card=f=>`<div class="f ${f.status}"><span class="tag">${f.status==='violation'?'VIOLATION':f.status==='segregate'?'keep apart':'unknown'}</span> <b>${esc(f.a)}</b> ↔ <b>${esc(f.b)}</b><div>${esc(f.requirement||'')}</div><small>${(f.reasons||[]).map(esc).join('<br>')}</small></div>`;
+d.findings.filter(f=>f.status==='violation').forEach(f=>h+=card(f));
+const seg=d.findings.filter(f=>f.status!=='violation');
+if(seg.length)h+=`<details><summary class="segregate" style="cursor:pointer;margin-top:10px">${seg.length} other pair${seg.length===1?'':'s'} are in different containers but must still be kept apart on board (tap to see)</summary>${seg.map(card).join('')}</details>`;
 document.getElementById('out').innerHTML=h+'</div>'}
 sample();
 </script>

@@ -82,7 +82,7 @@ def check(m: Manifest):
         idents = list(ex.map(_identify, [ln.description for ln in lines]))
     items, cargos = [], []
     for i, (ln, ident) in enumerate(zip(lines, idents)):
-        label = f"#{i+1} {ln.description[:40]}"
+        label = f"#{i+1} {ln.description[:60]}"
         entry = RULES.lookup(ident["un_number"], ident.get("packing_group", "")) if ident.get("un_number") else None
         items.append({"line": i + 1, "description": ln.description, "container": ln.container,
                       "identified": entry.cite if entry else None, "un": ident.get("un_number"),
