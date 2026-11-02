@@ -1,0 +1,618 @@
+{
+  "summary": {
+    "mode": "ours",
+    "n": 100,
+    "exact": 1.0,
+    "under_segregated": 0.0,
+    "by_rule": {
+      "none": 1.0,
+      "table": 1.0,
+      "code_class": 1.0,
+      "code_group": 1.0
+    },
+    "model": "gemma-4-26b-a4b-it",
+    "no_answer": 0
+  },
+  "rows": [
+    {
+      "id": "A001",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A002",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A003",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A004",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A005",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A006",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A007",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A008",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A009",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A010",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A011",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A012",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A013",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A014",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A015",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A016",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A017",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A018",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A019",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A020",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A021",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A022",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A023",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A024",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A025",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A026",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A027",
+      "rule": "table",
+      "gold": 3,
+      "pred": 3
+    },
+    {
+      "id": "A028",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A029",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A030",
+      "rule": "table",
+      "gold": 3,
+      "pred": 3
+    },
+    {
+      "id": "A031",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A032",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A033",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A034",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A035",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A036",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A037",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A038",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A039",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A040",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A041",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A042",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A043",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A044",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A045",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A046",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A047",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A048",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A049",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A050",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A051",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A052",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A053",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A054",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A055",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A056",
+      "rule": "table",
+      "gold": 3,
+      "pred": 3
+    },
+    {
+      "id": "A057",
+      "rule": "table",
+      "gold": 1,
+      "pred": 1
+    },
+    {
+      "id": "A058",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A059",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A060",
+      "rule": "table",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A061",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A062",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A063",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A064",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A065",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A066",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A067",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A068",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A069",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A070",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A071",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A072",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A073",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A074",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A075",
+      "rule": "code_class",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A076",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A077",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A078",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A079",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A080",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A081",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A082",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A083",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A084",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A085",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A086",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A087",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A088",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A089",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A090",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A091",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A092",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A093",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A094",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A095",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A096",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A097",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A098",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A099",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    },
+    {
+      "id": "A100",
+      "rule": "code_group",
+      "gold": 2,
+      "pred": 2
+    }
+  ]
+}

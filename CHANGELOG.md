@@ -12,3 +12,4 @@
 - Added FastAPI web API and single-page demo (manifest in plain words -> identification -> segregation findings with citations); Vercel config.
 - Free model default: gemini-3.5-flash via Gemini OpenAI-compatible API (gemini-2.5 is closed to new keys); longer timeout and retries.
 - Evals now run in parallel; Gemma 4 26B (open model, free tier) used because Gemini flash free tier is 20 requests/day.
+- First eval run (Gemma 4 26B, free tier, 2026-11-02): Test A baseline 48/100 exact (48/72 answered, 24 too lenient, 28 unparseable/no answer); ours 100/100. Test B UN exact on clear dangerous goods: baseline 66.7%, ours 84.6%; confident misses of dangerous goods: baseline 2, ours 0. Results in eval/results/.
