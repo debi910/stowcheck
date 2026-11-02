@@ -9,7 +9,9 @@
       "table": 1.0,
       "code_class": 1.0,
       "code_group": 0.52
-    }
+    },
+    "model": "default",
+    "no_answer": 0
   },
   "rows": [
     {

@@ -25,13 +25,22 @@ def main():
     rows = list(csv.DictReader(open(HERE / "test_b_descriptions.csv")))
     from stowcheck import llm
     index = Index(Rules()) if args.mode == "ours" else None
+    def run(r):
+        try:
+            if args.mode == "baseline":
+                a = llm.identify(r["description"])
+                a["abstain"] = a.get("is_dangerous") is None or float(a.get("confidence") or 0) < 0.5
+            else:
+                a = llm.identify_grounded(r["description"], index)
+        except Exception as e:
+            a = {"error": str(e)[:200], "abstain": True}
+        return a
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(int(__import__("os").getenv("STOWCHECK_WORKERS", "6"))) as ex:
+        answers = list(ex.map(run, rows))
     out = []
-    for r in rows:
-        if args.mode == "baseline":
-            a = llm.identify(r["description"])
-            a["abstain"] = a.get("is_dangerous") is None or float(a.get("confidence") or 0) < 0.5
-        else:
-            a = llm.identify_grounded(r["description"], index)
+    for r, a in zip(rows, answers):
         un = (a.get("un_number") or "").upper().replace(" ", "") or None
         if un and not un.startswith(("UN", "NA")):
             un = "UN" + un
@@ -47,6 +56,8 @@ def main():
         "dg_detection_clear": round(sum((o["pred_dg"] is True) == (o["gold_dg"] == "yes") for o in clear) / len(clear), 3),
         "un_exact_clear_dg": round(sum(o["pred_un"] == o["gold_un"] for o in clear_dg) / len(clear_dg), 3),
         "abstain_on_vague": round(sum(o["abstain"] for o in vague) / len(vague), 3),
+        "model": __import__("os").getenv("STOWCHECK_MODEL", "default"),
+        "errors": sum("error" in a for a in answers),
         "missed_dg_confident": sum(o["gold_dg"] == "yes" and o["pred_dg"] is False and not o["abstain"] for o in out),
     }
     print(json.dumps(summary, indent=2))

@@ -30,14 +30,14 @@ def chat(system: str, user: str, json_mode: bool = True, retries: int = 4) -> st
     base, key, model = _endpoint()
     body = {"model": os.getenv("STOWCHECK_MODEL", model), "temperature": 0,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
-    if json_mode:
+    if json_mode and not body["model"].startswith("gemma"):  # Gemma rejects JSON mode params
         body["response_format"] = {"type": "json_object"}
     req = urllib.request.Request(f"{base}/chat/completions", data=json.dumps(body).encode(),
                                  headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
                                           "User-Agent": "stowcheck/0.1"})
     for attempt in range(retries):
         try:
-            with urllib.request.urlopen(req, timeout=240) as r:
+            with urllib.request.urlopen(req, timeout=150) as r:
                 return json.load(r)["choices"][0]["message"]["content"]
         except (TimeoutError, urllib.error.URLError) as e:  # rate limits / slow free tiers
             code = getattr(e, "code", None)
@@ -48,8 +48,15 @@ def chat(system: str, user: str, json_mode: bool = True, retries: int = 4) -> st
 
 
 def parse_json(text: str) -> dict:
+    text = re.sub(r"<thought>.*?</thought>", "", text or "", flags=re.S)  # Gemma thinking block
+    text = text.split("</thought>")[-1]
     m = re.search(r"\{.*\}", text, re.S)
-    return json.loads(m.group(0)) if m else {}
+    if not m:
+        return {}
+    try:
+        return json.loads(m.group(0))
+    except json.JSONDecodeError:
+        return {}
 
 
 IDENTIFY_SYSTEM = f"""You identify dangerous goods for sea transport under US 49 CFR.

@@ -24,22 +24,40 @@ def main():
     rows = list(csv.DictReader(open(HERE / "test_a_pairs.csv")))
     if args.limit:
         rows = rows[: args.limit]
+    ap_workers = int(__import__("os").getenv("STOWCHECK_WORKERS", "6"))
     R = Rules()
     groups_cache = {}
+    if args.mode == "ours":  # tag each distinct cargo once, in parallel
+        from concurrent.futures import ThreadPoolExecutor
+        from stowcheck.llm import identify
+        uniq = {}
+        for r in rows:
+            uniq[r["un_a"]] = r["name_a"]
+            uniq[r["un_b"]] = r["name_b"]
+        with ThreadPoolExecutor(ap_workers) as ex:
+            res = ex.map(lambda kv: (kv[0], identify(f"{kv[0]} {kv[1]}").get("groups", [])), uniq.items())
+            groups_cache = dict(res)
+        print("groups", groups_cache, flush=True)
+    base_answers = {}
+    if args.mode == "baseline":
+        from concurrent.futures import ThreadPoolExecutor
+        from stowcheck.llm import baseline_pair
+
+        def ask(r):
+            try:
+                return r["id"], baseline_pair(f"{r['un_a']} {r['name_a']}", f"{r['un_b']} {r['name_b']}")
+            except Exception as e:  # count as no answer, keep going
+                return r["id"], {"level": None, "error": str(e)[:200]}
+        with ThreadPoolExecutor(ap_workers) as ex:
+            base_answers = dict(ex.map(ask, rows))
     out = []
     for r in rows:
         gold = int(r["gold_level"])
         if args.mode == "baseline":
-            from stowcheck.llm import baseline_pair
-            ans = baseline_pair(f"{r['un_a']} {r['name_a']}", f"{r['un_b']} {r['name_b']}")
-            pred = ans.get("level")
+            pred = base_answers[r["id"]].get("level")
         else:
             ga = gb = []
             if args.mode == "ours":
-                from stowcheck.llm import identify
-                for un, name in ((r["un_a"], r["name_a"]), (r["un_b"], r["name_b"])):
-                    if un not in groups_cache:
-                        groups_cache[un] = identify(f"{un} {name}").get("groups", [])
                 ga, gb = groups_cache[r["un_a"]], groups_cache[r["un_b"]]
             pred = R.pair(Cargo("a", r["un_a"], groups=ga), Cargo("b", r["un_b"], groups=gb))["level"]
         try:
@@ -54,7 +72,8 @@ def main():
     for o in out:
         by_rule.setdefault(o["rule"], []).append(o["gold"] == o["pred"])
     summary = {"mode": args.mode, "n": len(out), "exact": round(acc, 3), "under_segregated": round(under, 3),
-               "by_rule": {k: round(sum(v) / len(v), 3) for k, v in by_rule.items()}}
+               "by_rule": {k: round(sum(v) / len(v), 3) for k, v in by_rule.items()},
+               "model": __import__("os").getenv("STOWCHECK_MODEL", "default"), "no_answer": sum(o["pred"] is None for o in out)}
     print(json.dumps(summary, indent=2))
     (HERE / "results").mkdir(exist_ok=True)
     (HERE / "results" / f"test_a_{args.mode}.json").write_text(json.dumps({"summary": summary, "rows": out}, indent=2))
