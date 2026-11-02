@@ -1,0 +1,61 @@
+id,description,gold_dg,gold_un,ambiguous,note
+B001,"Eau de parfum, 100 ml glass bottles, 40 cartons, alcohol based",yes,UN1266,no,Perfumery products with flammable solvents
+B002,"Nail polish assorted colours 15ml x 2400 pcs",yes,UN1263,no,Nail polish ships as paint/varnish; often declared as cosmetics
+B003,"Power banks 20000mAh, retail boxed, 500 units",yes,UN3480,no,Lithium ion batteries
+B004,"Laptops with batteries installed, 200 units",yes,UN3481,no,Lithium ion batteries contained in equipment
+B005,"Hand sanitizer gel 70% ethanol, 500ml x 1000",yes,UN1170,no,Ethanol solution
+B006,"Swimming pool chlorine tablets (calcium hypochlorite 65%), 25kg drums",yes,UN1748,no,Calcium hypochlorite; classic misdeclared fire cause
+B007,"Charcoal briquettes for BBQ, 10kg bags",yes,UN1361,yes,Carbon of vegetable origin; may be exempt if tested
+B008,"Spray paint aerosol cans 400ml, 1200 pcs",yes,UN1950,no,Aerosols
+B009,"Butane gas refill canisters for camping stoves",yes,UN2037,no,Receptacles small containing gas (gas cartridges)
+B010,"Safety matches, household boxes",yes,UN1944,no,Matches safety
+B011,"Car batteries, lead acid, filled with acid, 60 units",yes,UN2794,no,Batteries wet filled with acid
+B012,"Caustic soda flakes 25kg bags",yes,UN1823,no,Sodium hydroxide solid
+B013,"Industrial floor cleaner containing hydrochloric acid 30%",yes,UN1789,no,Hydrochloric acid
+B014,"Hydrogen peroxide 50% technical grade, 30kg carboys",yes,UN2014,no,Hydrogen peroxide 40-60%
+B015,"Thinner for paint, 20L tins",yes,UN1263,no,Paint related material
+B016,"Printing ink, solvent based, 5kg pails",yes,UN1210,no,Printing ink flammable
+B017,"Contact adhesive / rubber cement 1L cans",yes,UN1133,no,Adhesives containing flammable liquid
+B018,"Isopropyl alcohol 99% for electronics cleaning, 4L",yes,UN1219,no,Isopropanol
+B019,"Acetone 20L drums",yes,UN1090,no,Acetone
+B020,"Methanol 200L drums",yes,UN1230,no,Methanol
+B021,"Diesel fuel samples in 1L tins",yes,UN1202,no,Diesel fuel
+B022,"Ammonium nitrate fertilizer 34% N, 50kg bags",yes,UN2067,yes,Ammonium nitrate based fertilizer; grade decides UN2067 vs UN1942 or not regulated
+B023,"Sulphur powder 25kg bags",yes,UN1350,no,Sulfur
+B024,"Potassium permanganate crystals for water treatment",yes,UN1490,no,Potassium permanganate
+B025,"Sodium cyanide briquettes for gold mining",yes,UN1689,no,Sodium cyanide solid
+B026,"Glacial acetic acid 99.8%, IBC",yes,UN2789,no,Acetic acid glacial
+B027,"Nitric acid 68%, 35kg carboys",yes,UN2031,no,Nitric acid 65-70%
+B028,"Fireworks, consumer, 1.4G",yes,UN0336,no,Fireworks
+B029,"Refrigerant gas R134a cylinders",yes,UN3159,no,1112-Tetrafluoroethane
+B030,"Propane cylinders 9kg, filled",yes,UN1978,no,Propane
+B031,"Oxygen cylinders, compressed, medical",yes,UN1072,no,Oxygen compressed
+B032,"Lithium metal coin cells CR2032 bulk packed",yes,UN3090,no,Lithium metal batteries
+B033,"Engine with residual fuel, motorcycle spare part",yes,UN3528,yes,Engine internal combustion flammable liquid powered; may be excepted if drained
+B034,"Seed cake (oil cake) for cattle feed, high oil content",yes,UN1386,yes,Seed cake; classification depends on oil content
+B035,"Fish meal, unstabilized",yes,UN1374,yes,Fishmeal unstabilized; stabilized grade is UN2216
+B036,"Aluminium powder, uncoated, for pigments",yes,UN1396,no,Aluminum powder uncoated
+B037,"Calcium carbide lumps, 100kg drums",yes,UN1402,no,Calcium carbide
+B038,"Pesticide, liquid, toxic, organophosphorus",yes,UN3018,yes,Organophosphorus pesticide liquid toxic; PG/flashpoint dependent
+B039,"Bleach, sodium hypochlorite 12%",yes,UN1791,no,Hypochlorite solution
+B040,"Formalin 37% formaldehyde solution",yes,UN2209,no,Formaldehyde solution
+B041,"Car air bags / airbag inflators, spare parts",yes,UN3268,no,Safety devices
+B042,"Dry ice for cooling samples",yes,UN1845,no,Carbon dioxide solid
+B043,"Paraformaldehyde prills",yes,UN2213,no,Paraformaldehyde
+B044,"Sodium chlorate weed killer",yes,UN1495,no,Sodium chlorate
+B045,"Organic peroxide, MEKP hardener for fiberglass resin",yes,UN3105,yes,Organic peroxide type D liquid; type depends on concentration
+B046,"Polyester resin with styrene, for boat repair",yes,UN1866,no,Resin solution flammable
+B047,"Cotton T-shirts, 2000 pcs",no,,no,Not dangerous
+B048,"Ceramic floor tiles",no,,no,Not dangerous
+B049,"Wooden furniture, flat packed",no,,no,Not dangerous
+B050,"Rice, basmati, 25kg bags",no,,no,Not dangerous
+B051,"Stainless steel kitchen utensils",no,,no,Not dangerous
+B052,"Plastic toys without batteries",no,,no,Not dangerous
+B053,"Water based acrylic wall paint, 20L",no,,yes,Water based paint usually not regulated
+B054,"Shampoo and conditioner bottles",no,,no,Not dangerous
+B055,"Leather shoes",no,,no,Not dangerous
+B056,"Mineral water bottles",no,,no,Not dangerous
+B057,"Household cleaning products (assorted)",yes,,yes,Vague: could be corrosive or not; abstain expected
+B058,"Chemicals for laboratory, assorted",yes,,yes,Vague: abstain expected
+B059,"Spare parts",no,,yes,Vague: abstain expected
+B060,"Cosmetics assorted",no,,yes,Vague: may hide aerosols or perfume; abstain expected

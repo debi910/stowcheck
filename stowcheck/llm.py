@@ -75,3 +75,39 @@ including subsidiary hazards and column 10B segregation codes. Return JSON:
 def baseline_pair(a: str, b: str) -> dict:
     q = f"Cargo 1: {a}\nCargo 2: {b}\nWhat segregation does 49 CFR require between them on a ship?"
     return parse_json(chat(BASELINE_SYSTEM, q))
+
+
+# ---- grounded identification (ours) ------------------------------------------
+TERMS_SYSTEM = """You help find a cargo's entry in the US 49 CFR 172.101 Hazardous Materials Table.
+Given a cargo description, return JSON {"search_terms": ["...", "..."]} with 1-3 short phrases written
+the way 49 CFR proper shipping names are written (e.g. "power bank" -> "lithium ion batteries";
+"pool chlorine tablets" -> "calcium hypochlorite"). If the cargo is clearly not dangerous, return []."""
+
+PICK_SYSTEM = f"""You classify a cargo for sea transport under US 49 CFR. You are given the cargo description
+and candidate rows from the 172.101 table. Pick the single best candidate, or none if the cargo is not
+dangerous or the description is too vague to decide. Return JSON:
+{{"choice": <candidate number or null>, "is_dangerous": true|false|null, "confidence": 0.0-1.0,
+  "groups": [subset of {GROUPS}], "evidence": "which words in the description support the choice"}}
+Use is_dangerous null and confidence below 0.5 when the description could be several different things."""
+
+
+def identify_grounded(description: str, index, k: int = 6, abstain_below: float = 0.5) -> dict:
+    terms = parse_json(chat(TERMS_SYSTEM, description)).get("search_terms") or []
+    cands, seen = [], set()
+    for q in [description] + list(terms):
+        for e in index.search(q, k):
+            if (e.un, e.name) not in seen:
+                seen.add((e.un, e.name))
+                cands.append(e)
+    cands = cands[: 3 * k]
+    listing = "\n".join(f"{i+1}. {e.un} | {e.name} | class {e.hazard_class} | PG {e.packing_group or '-'}"
+                        for i, e in enumerate(cands)) or "(no candidates)"
+    ans = parse_json(chat(PICK_SYSTEM, f"Cargo: {description}\n\nCandidates:\n{listing}"))
+    choice = ans.get("choice")
+    entry = cands[int(choice) - 1] if isinstance(choice, int) and 1 <= choice <= len(cands) else None
+    conf = float(ans.get("confidence") or 0)
+    abstain = ans.get("is_dangerous") is None or conf < abstain_below
+    return {"is_dangerous": ans.get("is_dangerous"), "un_number": entry.un if entry and not abstain else None,
+            "packing_group": entry.packing_group if entry else "", "entry": entry.cite if entry else None,
+            "groups": [g for g in ans.get("groups") or [] if g in GROUPS], "confidence": conf,
+            "abstain": abstain, "evidence": ans.get("evidence", ""), "search_terms": terms}
