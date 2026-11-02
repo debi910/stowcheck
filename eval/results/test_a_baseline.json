@@ -1,0 +1,25 @@
+{
+  "summary": {
+    "mode": "baseline",
+    "n": 2,
+    "exact": 1.0,
+    "under_segregated": 0.0,
+    "by_rule": {
+      "none": 1.0
+    }
+  },
+  "rows": [
+    {
+      "id": "A001",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    },
+    {
+      "id": "A002",
+      "rule": "none",
+      "gold": 0,
+      "pred": 0
+    }
+  ]
+}

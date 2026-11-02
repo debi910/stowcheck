@@ -2,7 +2,7 @@
 
 Set one of:
   GROQ_API_KEY    -> https://api.groq.com/openai/v1   (default model llama-3.3-70b-versatile)
-  GEMINI_API_KEY  -> https://generativelanguage.googleapis.com/v1beta/openai  (gemini-2.5-flash)
+  GEMINI_API_KEY  -> https://generativelanguage.googleapis.com/v1beta/openai  (gemini-3.5-flash)
 Override the model with STOWCHECK_MODEL.
 """
 from __future__ import annotations
@@ -11,6 +11,7 @@ import json
 import os
 import re
 import time
+import urllib.error
 import urllib.request
 
 from .engine import GROUPS
@@ -21,7 +22,7 @@ def _endpoint():
         return "https://api.groq.com/openai/v1", os.environ["GROQ_API_KEY"], "llama-3.3-70b-versatile"
     if os.getenv("GEMINI_API_KEY"):
         return ("https://generativelanguage.googleapis.com/v1beta/openai", os.environ["GEMINI_API_KEY"],
-                "gemini-2.5-flash")
+                "gemini-3.5-flash")
     raise RuntimeError("Set GROQ_API_KEY or GEMINI_API_KEY")
 
 
@@ -36,10 +37,11 @@ def chat(system: str, user: str, json_mode: bool = True, retries: int = 4) -> st
                                           "User-Agent": "stowcheck/0.1"})
     for attempt in range(retries):
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=240) as r:
                 return json.load(r)["choices"][0]["message"]["content"]
-        except urllib.error.HTTPError as e:  # rate limits on free tiers
-            if e.code in (429, 500, 503) and attempt < retries - 1:
+        except (TimeoutError, urllib.error.URLError) as e:  # rate limits / slow free tiers
+            code = getattr(e, "code", None)
+            if (code in (429, 500, 503) or code is None) and attempt < retries - 1:
                 time.sleep(2 ** (attempt + 2))
                 continue
             raise
