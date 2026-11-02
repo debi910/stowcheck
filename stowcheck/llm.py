@@ -26,9 +26,30 @@ def _endpoint():
     raise RuntimeError("Set GROQ_API_KEY or GEMINI_API_KEY")
 
 
+_PREFER = ["gpt-oss-120b", "llama-4-maverick", "llama-3.3-70b", "llama-4-scout", "qwen3", "kimi-k2", "gpt-oss-20b",
+           "llama", "gemini-3.5-flash", "gemma-4-26b"]
+_SKIP = ("whisper", "guard", "tts", "orpheus", "playai", "embed", "compound", "prompt-guard", "distil")
+_resolved: dict[str, str] = {}
+
+
+def _pick_model(base: str, key: str) -> str | None:
+    """Ask the provider which chat models exist and pick the best free one (Groq retires models often)."""
+    req = urllib.request.Request(f"{base}/models", headers={"Authorization": f"Bearer {key}",
+                                                           "User-Agent": "Mozilla/5.0 (compatible; stowcheck/0.1)"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        ids = [m["id"].removeprefix("models/") for m in json.load(r).get("data", [])]
+    ids = [i for i in ids if not any(x in i.lower() for x in _SKIP)]
+    for pref in _PREFER:
+        for i in ids:
+            if pref in i.lower():
+                return i
+    return ids[0] if ids else None
+
+
 def chat(system: str, user: str, json_mode: bool = True, retries: int = 4) -> str:
     base, key, model = _endpoint()
-    body = {"model": os.getenv("STOWCHECK_MODEL", model), "temperature": 0,
+    model = _resolved.get(base) or os.getenv("STOWCHECK_MODEL", model)
+    body = {"model": model, "temperature": 0,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]}
     if json_mode and not body["model"].startswith("gemma"):  # Gemma rejects JSON mode params
         body["response_format"] = {"type": "json_object"}
@@ -41,6 +62,15 @@ def chat(system: str, user: str, json_mode: bool = True, retries: int = 4) -> st
                 return json.load(r)["choices"][0]["message"]["content"]
         except (TimeoutError, urllib.error.URLError) as e:  # rate limits / slow free tiers
             code = getattr(e, "code", None)
+            if code in (400, 404) and base not in _resolved:  # model retired: discover a live one, retry once
+                new = _pick_model(base, key)
+                if new and new != body["model"]:
+                    _resolved[base] = new
+                    body["model"] = new
+                    if new.startswith("gemma"):
+                        body.pop("response_format", None)
+                    req.data = json.dumps(body).encode()
+                    continue
             if (code in (429, 500, 503) or code is None) and attempt < retries - 1:
                 time.sleep(2 ** (attempt + 2))
                 continue

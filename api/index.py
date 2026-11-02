@@ -54,6 +54,8 @@ def health():
     try:
         from stowcheck.llm import chat
         out["test_call"] = chat("Reply with JSON {\"ok\": true}", "ping")[:200]
+        from stowcheck import llm
+        out["resolved_model"] = llm._resolved
     except Exception as e:
         body = ""
         if hasattr(e, "read"):

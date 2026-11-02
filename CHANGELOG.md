@@ -16,3 +16,4 @@
 - Test B scoring split into clear / hard-but-decidable / truly vague items. Gemma 4 run: UN exact on hard items baseline 1/7 vs ours 6/7; vague abstain 4/5 both.
 - API identifies manifest lines in parallel.
 - Re-asked the 28 Test A baseline no-answers: all timed out again (model still thinking after 150 s, 4 tries each, 2 rounds). Final baseline: 48/100 exact, 48/72 of answered, 24 too lenient.
+- Auto-pick a live model when the provider has retired the configured one (Groq retired llama-3.3-70b-versatile).
