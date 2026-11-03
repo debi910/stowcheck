@@ -288,16 +288,29 @@ const REPO='https://github.com/debi910/stowcheck/blob/main/';
 /* evaluation numbers, copied from eval/results/*.json */
 const STATS=[
   {b:'~50%',s:'Best frontier-model score on dangerous-goods stowage questions',m:'External benchmark: <a href="https://arxiv.org/abs/2608.21036" target="_blank" rel="noopener">DGEval, 2026</a>'},
-  {b:'67% → 87%',s:'Right UN number from plain cargo text, same model',m:'n = 39 clear dangerous goods · <a href="#eval">development set</a>'},
-  {b:'2 → 0',s:'Dangerous cargoes confidently called “not dangerous”',m:'n = 60 descriptions · <a href="#eval">development set</a>'},
+  {b:'63% → 88%',s:'Right UN number from plain cargo text, same free model',m:'n = 24 · held-out set, run once · <a href="#eval">details</a>'},
+  {b:'0',s:'Dangerous cargoes StowCheck confidently called “not dangerous”',m:'n = 90 across both description sets · <a href="#eval">details</a>'},
 ];
+const FAILS_D=`<div class="h"><span>Where StowCheck missed (held-out)</span><span></span><span></span></div>
+  <div><span>Sodium hypochlorite solution</span><span class="mono">UN1791</span><span class="q-t">said dangerous, no row</span></div>
+  <div><span>Ammonia solution</span><span class="mono">UN2672</span><span class="q-t">said dangerous, no row</span></div>
+  <div><span>Carbon dioxide cylinders</span><span class="mono">UN1013</span><span class="q-t">API error, counted wrong</span></div>
+  <div><span>“Car parts (used)”</span><span class="mono">vague</span><span class="no-t">called not dangerous</span></div>`;
+const FAILS_C=`<div class="h"><span>Declared as</span><span>Really was</span><span>StowCheck</span></div>
+  <div><span>“Coconut pellets”</span><span>Charcoal, UN1361</span><span class="no-t">cleared</span></div>
+  <div><span>“Dolls”</span><span>Calcium hypochlorite</span><span class="no-t">cleared</span></div>
+  <div><span>“Calcium chloride”</span><span>Calcium hypochlorite</span><span class="no-t">cleared</span></div>
+  <div><span>“Disinfectant”, “Whitening agent”, “Organic surface”</span><span>Calcium hypochlorite</span><span class="q-t">sent to a human</span></div>
+  <div><span>“Chlorinated paraffin wax”</span><span>Same, undeclared</span><span class="ok-t">flagged</span></div>`;
 const EVALS=[
-  {wide:true,t:'Right UN number · clear dangerous goods',d:'39 invoice-style lines such as “power banks” or “nail polish”. Development set: the prompts were written while looking at it.',
-   rows:[['Model alone',.667,'67%'],['StowCheck',.872,'87%']],note:'Hard but decidable items (charcoal, fish meal, resin hardener and similar): 1 of 7 alone, 6 of 7 with StowCheck.',src:'eval/test_b_descriptions.csv'},
-  {t:'Right segregation call · 100 cargo pairs',d:'Pairs of common dangerous goods. Correct answers come from the 49 CFR tables.',
-   rows:[['Model alone',.667,'48 / 72'],['StowCheck',1,'100 / 100']],note:'The model alone answered 72 (28 timed out), and 24 of its answers were too lenient. The answer key comes from the same tables the engine reads, so 100 shows the engine is wired right, not that it is smarter.',src:'eval/build_test_a.py'},
-  {t:'What each part adds · same 100 pairs',d:'Out of 100, with timeouts counted as wrong.',
-   rows:[['Model alone',.48,'48'],['Table, no AI tags',.88,'88'],['StowCheck',1,'100']],note:'Without the AI tagging chemical families, the special stowage rules for about half the code-driven pairs cannot fire.',src:'eval/run_test_a.py'},
+  {wide:true,t:'Held-out test · right UN number for clear dangerous goods',d:'30 new descriptions (turpentine, e-bikes, zinc dust, steel coils…) written after the prompts were frozen and run once. Same Gemma 4 model on both sides.',
+   rows:[['Model alone',.625,'15 / 24'],['StowCheck',.875,'21 / 24']],fails:FAILS_D,note:'Neither side called a dangerous cargo safe. The first attempt hit 9 API timeouts and was re-run at lower load; both runs are published (first run: 13 vs 16 of 24).',src:'eval/test_d_heldout.csv'},
+  {wide:true,t:'Real incidents · what shippers actually declared',d:'7 declarations from container-ship fire investigations (Yantian Express, KMTC Hong Kong, Gard case files). The real cargo was dangerous every time.',
+   rows:[['Model alone',4/7,'4 / 7'],['StowCheck',4/7,'4 / 7']],fails:FAILS_C,note:'No better than the model alone. A deliberately false description can\'t be caught from its words; that is why StowCheck also checks a typed UN number against its description and never reports “safe” while any line is unsure.',src:'eval/test_c_incidents.csv'},
+  {t:'Development set · right UN number',d:'39 clear dangerous goods. The prompts were written while looking at this set.',
+   rows:[['Model alone',.667,'67%'],['StowCheck',.872,'87%']],note:'Hard but decidable items (charcoal, fish meal, resin hardener): 1 of 7 alone, 6 of 7 with StowCheck.',src:'eval/test_b_descriptions.csv'},
+  {t:'Segregation call · 100 cargo pairs',d:'Answer key from the 49 CFR tables, out of 100 with timeouts counted wrong.',
+   rows:[['Model alone',.48,'48'],['Table, no AI tags',.88,'88'],['StowCheck',1,'100']],note:'The model alone answered 72 and got 48 right; 24 answers were too lenient. The key comes from the same tables the engine reads, so this shows the AI tags close the gap, not that the engine is smarter.',src:'eval/build_test_a.py'},
 ];
 
 const SAMPLE=[["Swimming pool chlorine tablets, 25kg drums","MSKU1"],["Car batteries, lead acid, filled with acid","MSKU1"],["Eau de parfum 100ml, alcohol based","MSKU2"],["Hydrogen peroxide 50% technical grade","MSKU2"],["Ammonia, anhydrous UN1005 cylinders","MSKU3"],["Hydrochloric acid 30% industrial cleaner","MSKU4"],["Cotton T-shirts","MSKU4"],["Household cleaning products (assorted)","MSKU5"]];

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-03
+- Added Test C: 7 real misdeclared cargo declarations from container-ship fire investigations, run once. Model alone and StowCheck both 4/7 flagged or sent to a human; 3 cleared by both (published as a limit).
+- Added Test D: 30 held-out descriptions, written after prompts were frozen, run once. UN exact on 24 clear DG: 15 alone vs 21 StowCheck; 0 dangerous cargo called safe on either side. First attempt had 9 API timeouts; re-run at lower concurrency, both runs kept.
+- Added misdeclaration check: a typed UN number not in 172.101 is rejected, and one whose description reads like a different class or ordinary goods is flagged.
+- Redesigned the web page: light, neutral, monochrome with status colours only for meaning. Evaluation section leads with held-out and real-incident results, including failures.
+- README and page numbers restated with sample sizes, development-set caveat, Test A answer-key caveat, and the demo-model difference.
+
 ## 2026-11-02
 - Added 49 CFR 172.101 table (3,001 rows) and 176.83(b)/176.84 segregation data (public domain, see data/SOURCES.md).
 - Added deterministic segregation engine: general table, subsidiary hazards, column 10B codes, same-container rule.

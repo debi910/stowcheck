@@ -21,32 +21,51 @@ The AI does the language work and the code applies the rules.
 
 ## Results
 
-All results use the same free model in both arms: Gemma 4 26B through the Gemini API free tier. The data, scripts and raw outputs are in `eval/`.
+All results use the same free model in both arms: Gemma 4 26B through the Gemini API free tier. The live demo runs a different free model (Groq, currently openai/gpt-oss-120b), so the demo's answers can differ from these numbers. Data, scripts and every answer are in `eval/`.
 
-**Test A: 100 real pairs of commonly shipped dangerous goods. Task: name the required segregation level.**
+**Held-out test (Test D): 30 new descriptions, written after the prompts were frozen and run once.** 24 clear dangerous goods, 3 ordinary goods, 3 vague or undecidable.
 
-| | Exact | Too lenient (unsafe) | No answer |
-|---|---|---|---|
-| Model alone | 48 / 100 | 24 | 28 (timed out twice) |
-| Rule table only, no AI | 88 / 100 | 12 | 0 |
-| **StowCheck (AI + rules)** | **100 / 100** | **0** | **0** |
+| | UN number right (clear DG) | Dangerous cargo called safe |
+|---|---|---|
+| Model alone | 15 / 24 (62.5%) | 0 |
+| **StowCheck** | **21 / 24 (87.5%)** | **0** |
 
-The answer key comes from the regulation text applied by hand, and that text is the same table the engine encodes. So Test A mainly shows that the free model cannot apply the rules reliably on its own, and that the AI's real job here (tagging chemical families) closes the 12-pair gap the table leaves.
+The first attempt hit 9 API timeouts on the StowCheck side, so the whole set was re-run at lower concurrency. Both runs are published (`test_d_*_run1.json`: 13 vs 16 of 24). StowCheck's misses: sodium hypochlorite and ammonia solution (said dangerous but picked no row), carbon dioxide (API error, counted wrong). It also called the vague "Car parts (used)" not dangerous, where the model alone said "not sure".
 
-**Test B: 60 shipping descriptions written like real invoices.** These include 39 clear dangerous goods, 7 that are hard but decidable, 5 that are vague, and 9 that are not dangerous.
+**Real incidents (Test C): 7 declarations taken from container-ship fire investigations.** The real cargo was dangerous every time (Yantian Express 2019, KMTC Hong Kong 2019, Gard case files on calcium hypochlorite). Sources are in `eval/test_c_incidents.csv`.
 
-| | UN number right (clear DG) | UN number right (hard items) | Dangerous cargo called safe |
+| | Flagged or sent to a human | Cleared as safe |
+|---|---|---|
+| Model alone | 4 / 7 | 3 |
+| StowCheck | 4 / 7 | 3 |
+
+StowCheck is no better here. "Coconut pellets", "Dolls" and "Calcium chloride" describe harmless goods, so no reader of the words alone could catch them. This is why StowCheck also checks a typed UN number against its description, rejects UN numbers that are not in the table, and never reports "safe" while a line is unsure.
+
+**Development set (Test B): 60 invoice-style descriptions.** The prompts were written while looking at this set, so treat it as a development score.
+
+| | UN number right (39 clear DG) | Hard items (7) | Dangerous cargo called safe |
 |---|---|---|---|
 | Model alone | 66.7% | 1 / 7 | 2 |
 | **StowCheck** | **87.2%** | **6 / 7** | **0** |
 
-Both arms said "not sure" on 4 of the 5 vague items, and neither flagged any of the 9 ordinary goods as dangerous. StowCheck numbers use the final prompt; items that hit API timeouts were re-asked once.
+**Segregation pairs (Test A): 100 pairs of common dangerous goods. Task: name the required segregation level.**
+
+| | Exact | Too lenient (unsafe) | No answer |
+|---|---|---|---|
+| Model alone | 48 / 100 (48 of 72 answered) | 24 | 28 (timed out twice) |
+| Rule table only, no AI | 88 / 100 | 12 | 0 |
+| **StowCheck (AI + rules)** | **100 / 100** | **0** | **0** |
+
+The answer key comes from the regulation text, which is the same table the engine encodes, so 100 shows the engine is wired right. What Test A really shows is that the free model cannot apply the rules reliably on its own, and that the AI's job (tagging chemical families) closes the 12-pair gap the table leaves.
+
+For context only: the external [DGEval benchmark](https://arxiv.org/abs/2608.21036) found the best of 13 frontier models scored about 50% on stowage questions. It is a different task and data set from ours.
 
 ## Limits
 
 - The rules are US 49 CFR only. The IMDG Code is copyrighted, so it is not included.
 - Class 1 (explosives) compatibility groups, the 176.83(a) exceptions, and container-ship spacing distances (table 176.83(f)) are not modelled.
-- The test sets are small (100 and 60 items) and hand-built.
+- The test sets are small (100 pairs, 60, 30 and 7 descriptions) and hand-built by the team, except the 7 incident declarations, which come from published investigations.
+- Words alone cannot expose a deliberately false declaration (see Test C).
 - This is a research demo. It is not for operational use.
 
 ## Run it
@@ -62,4 +81,4 @@ python3 eval/run_test_a.py --mode table      # no key needed
 ## Data and credits
 
 - The 49 CFR 172.101, 176.83 and 176.84 data is a US Government work in the public domain. It was copied from [TurpoFIN/huolitsija-submission](https://github.com/TurpoFIN/huolitsija-submission), which parsed it from eCFR as of 2026-10-22; see `data/SOURCES.md`.
-- Models: Gemma 4 and Gemini via the Google AI free tier; Llama 3.3 via the Groq free tier.
+- Models: Gemma 4 and Gemini via the Google AI free tier; gpt-oss-120b via the Groq free tier for the live demo.

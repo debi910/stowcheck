@@ -2,13 +2,13 @@
   "summary": {
     "mode": "baseline",
     "n": 30,
-    "dg_detection_clear": 0.926,
-    "un_exact_clear_dg": 0.542,
+    "dg_detection_clear": 1.0,
+    "un_exact_clear_dg": 0.625,
     "un_exact_hard": "0/0",
     "abstain_on_vague": "2/3",
     "missed_dg_confident": 0,
     "model": "gemma-4-26b-a4b-it",
-    "errors": 2
+    "errors": 0
   },
   "rows": [
     {
@@ -166,10 +166,10 @@
       "gold_dg": "yes",
       "gold_un": "UN3481",
       "ambiguous": false,
-      "pred_dg": null,
-      "pred_un": null,
-      "abstain": true,
-      "confidence": null
+      "pred_dg": true,
+      "pred_un": "UN3481",
+      "abstain": false,
+      "confidence": 0.95
     },
     {
       "id": "D017",
@@ -196,10 +196,10 @@
       "gold_dg": "yes",
       "gold_un": "UN1418",
       "ambiguous": false,
-      "pred_dg": null,
-      "pred_un": null,
-      "abstain": true,
-      "confidence": null
+      "pred_dg": true,
+      "pred_un": "UN1418",
+      "abstain": false,
+      "confidence": 1.0
     },
     {
       "id": "D020",
