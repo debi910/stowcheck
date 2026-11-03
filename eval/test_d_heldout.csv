@@ -1,0 +1,31 @@
+id,description,gold_dg,gold_un,ambiguous,note
+D001,"Turpentine, 200L steel drums",yes,UN1299,no,Turpentine
+D002,"Toluene solvent, IBC 1000L",yes,UN1294,no,Toluene
+D003,"Xylene, mixed isomers, 25L jerrycans",yes,UN1307,no,Xylenes
+D004,"Kerosene for lamps, 1L bottles",yes,UN1223,no,Kerosene
+D005,"Ethyl acetate 99.5%, drums",yes,UN1173,no,Ethyl acetate
+D006,"Sulphuric acid 98%, carboys",yes,UN1830,no,Sulfuric acid
+D007,"Potassium hydroxide flakes, 25kg bags",yes,UN1813,no,Potassium hydroxide solid
+D008,"Sodium hypochlorite solution 15% (liquid bleach), 20L",yes,UN1791,no,Hypochlorite solution
+D009,"Ammonium hydroxide 25% (ammonia water)",yes,UN2672,no,Ammonia solution
+D010,"Phosphoric acid 85% food grade",yes,UN1805,no,Phosphoric acid solution
+D011,"Acetylene cylinders, dissolved",yes,UN1001,no,Acetylene dissolved
+D012,"Nitrogen cylinders, compressed, industrial",yes,UN1066,no,Nitrogen compressed
+D013,"Carbon dioxide cylinders for beverage dispensing",yes,UN1013,no,Carbon dioxide
+D014,"Disposable cigarette lighters, retail packs",yes,UN1057,no,Lighters
+D015,"E-bikes with lithium-ion battery fitted",yes,UN3171,no,Battery-powered vehicle
+D016,"Mobile phones with batteries, retail boxed",yes,UN3481,no,Lithium ion batteries contained in equipment
+D017,"Spare lithium-ion battery packs for power tools",yes,UN3480,no,Lithium ion batteries
+D018,"Red phosphorus, amorphous",yes,UN1338,no,Phosphorus amorphous
+D019,"Magnesium powder",yes,UN1418,no,Magnesium powder
+D020,"Zinc dust for galvanising paint",yes,UN1436,no,Zinc powder or dust
+D021,"Potassium nitrate fertilizer grade",yes,UN1486,no,Potassium nitrate
+D022,"Sodium nitrite, technical",yes,UN1500,no,Sodium nitrite
+D023,"Benzoyl peroxide paste, hardener",yes,,yes,Organic peroxide; type depends on formulation
+D024,"Chloroform, laboratory reagent",yes,UN1888,no,Chloroform
+D025,"Phenol, solid",yes,UN1671,no,Phenol solid
+D026,"Wooden pallets, empty",no,,no,Not dangerous
+D027,"Frozen shrimp, reefer container",no,,no,Not dangerous
+D028,"Steel coils",no,,no,Not dangerous
+D029,"Industrial chemicals, mixed pallet",yes,,yes,Vague: abstain expected
+D030,"Car parts (used)",no,,yes,Vague: may include batteries or fuel; abstain acceptable

@@ -40,16 +40,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["baseline", "ours"], required=True)
     ap.add_argument("--rescore", action="store_true", help="recompute the summary from saved rows")
+    ap.add_argument("--set", default="b", choices=["b", "d"], help="b = dev set, d = held-out set (run once)")
     args = ap.parse_args()
     if args.rescore:
-        path = HERE / "results" / f"test_b_{args.mode}.json"
+        path = HERE / "results" / f"test_{args.set}_{args.mode}.json"
         saved = json.load(open(path))
         saved["summary"] = {**score(saved["rows"], args.mode), "model": saved["summary"].get("model"),
                             "errors": saved["summary"].get("errors")}
         json.dump(saved, open(path, "w"), indent=2)
         print(json.dumps(saved["summary"], indent=2))
         return
-    rows = list(csv.DictReader(open(HERE / "test_b_descriptions.csv")))
+    rows = list(csv.DictReader(open(HERE / ("test_b_descriptions.csv" if args.set == "b" else "test_d_heldout.csv"))))
     from stowcheck import llm
     index = Index(Rules()) if args.mode == "ours" else None
     def run(r):
@@ -73,12 +74,13 @@ def main():
             un = "UN" + un
         out.append({"id": r["id"], "gold_dg": r["gold_dg"], "gold_un": r["gold_un"] or None,
                     "ambiguous": r["ambiguous"] == "yes", "pred_dg": a.get("is_dangerous"), "pred_un": un,
-                    "abstain": bool(a.get("abstain")), "confidence": a.get("confidence")})
+                    "abstain": bool(a.get("abstain")), "confidence": a.get("confidence"),
+                    **({"error": a["error"]} if "error" in a else {})})
         print(r["id"], r["gold_un"], un, a.get("is_dangerous"), "abstain" if a.get("abstain") else "", flush=True)
     summary = score(out, args.mode, answers)
     print(json.dumps(summary, indent=2))
     (HERE / "results").mkdir(exist_ok=True)
-    (HERE / "results" / f"test_b_{args.mode}.json").write_text(json.dumps({"summary": summary, "rows": out}, indent=2))
+    (HERE / "results" / f"test_{args.set}_{args.mode}.json").write_text(json.dumps({"summary": summary, "rows": out}, indent=2))
 
 
 if __name__ == "__main__":

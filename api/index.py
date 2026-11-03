@@ -28,21 +28,34 @@ class Manifest(BaseModel):
 
 def _identify(description: str) -> dict:
     typed = UN_RE.search(description)
-    if typed:
-        un = f"{typed.group(1).upper()}{typed.group(2)}"
-        ident = {"un_number": un, "is_dangerous": True, "confidence": 1.0, "abstain": False, "groups": [],
-                 "evidence": "UN number typed in the description"}
-        try:  # still ask the AI for chemical groups; the engine works without them
+    if not typed:
+        try:
             from stowcheck.llm import identify_grounded
-            ident["groups"] = identify_grounded(description, INDEX).get("groups", [])
-        except Exception:
-            pass
-        return ident
+            return identify_grounded(description, INDEX)
+        except Exception as e:
+            return {"un_number": None, "abstain": True, "error": str(e)[:200]}
+    un = f"{typed.group(1).upper()}{typed.group(2)}"
+    declared = RULES.lookup(un)
+    if declared is None:  # a typed number that is not in the 172.101 table is not trusted
+        return {"un_number": None, "abstain": True, "is_dangerous": None,
+                "evidence": f"{un} is not in the 49 CFR 172.101 table. Check the number."}
+    ident = {"un_number": un, "is_dangerous": True, "confidence": 1.0, "abstain": False, "groups": [],
+             "evidence": "UN number typed in the description"}
+    # Misdeclaration check: read the words without the number and see if they point somewhere else.
+    words = UN_RE.sub(" ", description).strip(" ,;-")
     try:
         from stowcheck.llm import identify_grounded
-        return identify_grounded(description, INDEX)
-    except Exception as e:
-        return {"un_number": None, "abstain": True, "error": str(e)[:200]}
+        ai = identify_grounded(words or description, INDEX)
+        ident["groups"] = ai.get("groups", [])
+        ai_entry = RULES.lookup(ai["un_number"]) if ai.get("un_number") and not ai.get("abstain") else None
+        if ai_entry and ai_entry.hazard_class != declared.hazard_class:
+            ident["mismatch"] = (f"Declared {un} is Class {declared.hazard_class}, but the description reads like "
+                                 f"{ai_entry.cite} (Class {ai_entry.hazard_class}). Check the declaration.")
+        elif ai.get("is_dangerous") is False and not ai.get("abstain") and words:
+            ident["mismatch"] = f"Declared {un}, but the description reads like ordinary goods. Check the declaration."
+    except Exception:
+        pass
+    return ident
 
 
 @app.get("/api/health")
@@ -89,7 +102,7 @@ def check(m: Manifest):
                       "class": entry.hazard_class if entry else None, "groups": ident.get("groups", []),
                       "confidence": ident.get("confidence"), "abstain": ident.get("abstain"),
                       "is_dangerous": ident.get("is_dangerous"), "evidence": ident.get("evidence", ""),
-                      "error": ident.get("error")})
+                      "error": ident.get("error"), "mismatch": ident.get("mismatch")})
         if entry:
             cargos.append(Cargo(label=label, un=entry.un, packing_group=entry.packing_group,
                                 groups=ident.get("groups", []), container=ln.container))

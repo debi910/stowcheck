@@ -1,0 +1,75 @@
+{
+  "summary": {
+    "mode": "ours",
+    "n": 7,
+    "model": "gemma-4-26b-a4b-it",
+    "caught": 4,
+    "cleared": 3,
+    "errors": 0
+  },
+  "rows": [
+    {
+      "id": "C001",
+      "declared": "Coconut pellets (compressed fiber used for feed or fertilizer)",
+      "actual": "Coconut charcoal (pyrochar)",
+      "actual_un": "UN1361",
+      "pred_un": null,
+      "verdict": "cleared",
+      "confidence": 1.0
+    },
+    {
+      "id": "C002",
+      "declared": "Dolls",
+      "actual": "Calcium hypochlorite",
+      "actual_un": "UN1748",
+      "pred_un": null,
+      "verdict": "cleared",
+      "confidence": 1.0
+    },
+    {
+      "id": "C003",
+      "declared": "Organic surface",
+      "actual": "Calcium hypochlorite",
+      "actual_un": "UN1748",
+      "pred_un": null,
+      "verdict": "needs_human",
+      "confidence": 0.0
+    },
+    {
+      "id": "C004",
+      "declared": "Calcium chloride",
+      "actual": "Calcium hypochlorite",
+      "actual_un": "UN1748",
+      "pred_un": null,
+      "verdict": "cleared",
+      "confidence": 1.0
+    },
+    {
+      "id": "C005",
+      "declared": "Disinfectant",
+      "actual": "Calcium hypochlorite",
+      "actual_un": "UN1748",
+      "pred_un": null,
+      "verdict": "needs_human",
+      "confidence": 0.4
+    },
+    {
+      "id": "C006",
+      "declared": "Whitening agent",
+      "actual": "Calcium hypochlorite",
+      "actual_un": "UN1748",
+      "pred_un": null,
+      "verdict": "needs_human",
+      "confidence": 0.3
+    },
+    {
+      "id": "C007",
+      "declared": "Chlorinated paraffin wax",
+      "actual": "Chlorinated paraffin wax (undeclared)",
+      "actual_un": "",
+      "pred_un": null,
+      "verdict": "flagged_dg",
+      "confidence": 1.0
+    }
+  ]
+}

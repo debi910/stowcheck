@@ -1,0 +1,315 @@
+{
+  "summary": {
+    "mode": "ours",
+    "n": 30,
+    "dg_detection_clear": 0.741,
+    "un_exact_clear_dg": 0.667,
+    "un_exact_hard": "0/0",
+    "abstain_on_vague": "2/3",
+    "missed_dg_confident": 0,
+    "model": "gemma-4-26b-a4b-it",
+    "errors": 9
+  },
+  "rows": [
+    {
+      "id": "D001",
+      "gold_dg": "yes",
+      "gold_un": "UN1299",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1299",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D002",
+      "gold_dg": "yes",
+      "gold_un": "UN1294",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1294",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D003",
+      "gold_dg": "yes",
+      "gold_un": "UN1307",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1307",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D004",
+      "gold_dg": "yes",
+      "gold_un": "UN1223",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1223",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D005",
+      "gold_dg": "yes",
+      "gold_un": "UN1173",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1173",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D006",
+      "gold_dg": "yes",
+      "gold_un": "UN1830",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1830",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D007",
+      "gold_dg": "yes",
+      "gold_un": "UN1813",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1813",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D008",
+      "gold_dg": "yes",
+      "gold_un": "UN1791",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D009",
+      "gold_dg": "yes",
+      "gold_un": "UN2672",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D010",
+      "gold_dg": "yes",
+      "gold_un": "UN1805",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1805",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D011",
+      "gold_dg": "yes",
+      "gold_un": "UN1001",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D012",
+      "gold_dg": "yes",
+      "gold_un": "UN1066",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D013",
+      "gold_dg": "yes",
+      "gold_un": "UN1013",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D014",
+      "gold_dg": "yes",
+      "gold_un": "UN1057",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1057",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D015",
+      "gold_dg": "yes",
+      "gold_un": "UN3171",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D016",
+      "gold_dg": "yes",
+      "gold_un": "UN3481",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D017",
+      "gold_dg": "yes",
+      "gold_un": "UN3480",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN3480",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D018",
+      "gold_dg": "yes",
+      "gold_un": "UN1338",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1338",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D019",
+      "gold_dg": "yes",
+      "gold_un": "UN1418",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1418",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D020",
+      "gold_dg": "yes",
+      "gold_un": "UN1436",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1436",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D021",
+      "gold_dg": "yes",
+      "gold_un": "UN1486",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1486",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D022",
+      "gold_dg": "yes",
+      "gold_un": "UN1500",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1500",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D023",
+      "gold_dg": "yes",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": true,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D024",
+      "gold_dg": "yes",
+      "gold_un": "UN1888",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1888",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D025",
+      "gold_dg": "yes",
+      "gold_un": "UN1671",
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D026",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D027",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    },
+    {
+      "id": "D028",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "D029",
+      "gold_dg": "yes",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": 0.0
+    },
+    {
+      "id": "D030",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": null
+    }
+  ]
+}

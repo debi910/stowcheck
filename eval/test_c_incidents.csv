@@ -1,0 +1,8 @@
+id,declared_description,actual_cargo,actual_un,source_ship,year,source_url,expected
+C001,"Coconut pellets (compressed fiber used for feed or fertilizer)",Coconut charcoal (pyrochar),UN1361,Yantian Express,2019,https://maritime-executive.com/article/report-misdeclared-charcoal-likely-caused-yantian-express-fire,flag_or_identify
+C002,"Dolls",Calcium hypochlorite,UN1748,KMTC Hong Kong,2019,https://www.seatrade-maritime.com/cargo/undeclared-dangerous-cargoes-believed-to-have-caused-fire-explosions-on-kmtc-containership,undetectable_from_text
+C003,"Organic surface",Calcium hypochlorite,UN1748,Gard case data (several ships),2018,https://safety4sea.com/cargo-misdeclaration-is-the-cause-for-many-container-fires/,flag_or_identify
+C004,"Calcium chloride",Calcium hypochlorite,UN1748,Gard case data (several ships),2018,https://safety4sea.com/cargo-misdeclaration-is-the-cause-for-many-container-fires/,flag_or_identify
+C005,"Disinfectant",Calcium hypochlorite,UN1748,Gard case data (several ships),2018,https://safety4sea.com/cargo-misdeclaration-is-the-cause-for-many-container-fires/,flag_or_identify
+C006,"Whitening agent",Calcium hypochlorite,UN1748,Gard case data (several ships),2018,https://safety4sea.com/cargo-misdeclaration-is-the-cause-for-many-container-fires/,flag_or_identify
+C007,"Chlorinated paraffin wax",Chlorinated paraffin wax (undeclared),,KMTC Hong Kong,2019,https://www.seatrade-maritime.com/cargo/undeclared-dangerous-cargoes-believed-to-have-caused-fire-explosions-on-kmtc-containership,flag_or_identify
