@@ -19,3 +19,4 @@
 - Auto-pick a live model when the provider has retired the configured one (Groq retired llama-3.3-70b-versatile).
 - Demo: violations first, other keep-apart pairs collapsed; picker prompt prefers the product's own entry and does not map finished articles (clothing etc.) to raw-material entries. Test B to be re-run with this prompt.
 - Test B re-run with final prompt (timeouts re-asked): ours UN exact on clear DG 87.2% (34/39), hard 6/7, 0 confident DG misses, 0 false alarms on ordinary goods.
+- New UI: hero with animated ship, stats strip, manifest workbench, staged progress, verdict banner, container view with hazard diamonds, plain-English violation cards with citations, detail drawer, animated results bars; reduced-motion support.
