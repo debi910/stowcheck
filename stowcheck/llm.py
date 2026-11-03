@@ -153,3 +153,22 @@ def identify_grounded(description: str, index, k: int = 6, abstain_below: float 
             "packing_group": entry.packing_group if entry else "", "entry": entry.cite if entry else None,
             "groups": [g for g in ans.get("groups") or [] if g in GROUPS], "confidence": conf,
             "abstain": abstain, "evidence": ans.get("evidence", ""), "search_terms": terms}
+
+
+EXTRACT_SYSTEM = """You read shipping documents (packing lists, commercial invoices, manifests) that were converted to text.
+List every cargo line item. For each, give the goods description exactly as written (keep UN numbers,
+concentrations and packaging words) and the container number if the document links one to that line.
+Container numbers look like four letters and seven digits, e.g. MSKU1234565. Skip totals, addresses, prices,
+headers and terms. Do not judge whether goods are dangerous.
+Reply with JSON only: {"lines": [{"description": "...", "container": "..."}]}"""
+
+
+def extract_lines(document_text: str, limit: int = 25) -> list[dict]:
+    """AI step 0: turn a messy document into cargo lines. The person reviews them before the check runs."""
+    out = parse_json(chat(EXTRACT_SYSTEM, document_text[:12000]))
+    lines = []
+    for ln in out.get("lines", [])[:limit]:
+        d = str(ln.get("description") or "").strip()
+        if d:
+            lines.append({"description": d[:200], "container": str(ln.get("container") or "").strip()[:20]})
+    return lines

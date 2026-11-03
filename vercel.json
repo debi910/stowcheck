@@ -1,4 +1,4 @@
 {
-  "functions": { "api/index.py": { "includeFiles": "{data,public,stowcheck}/**", "maxDuration": 60 } },
+  "functions": { "api/index.py": { "includeFiles": "{data,public,stowcheck}/**", "maxDuration": 120 } },
   "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
 }

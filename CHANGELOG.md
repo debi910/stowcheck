@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2026-11-03
+- Added document upload: PDF (pdf.js), Excel (SheetJS) and CSV are read in the browser; the AI extracts cargo lines and container numbers for the person to review before checking. Tested on the sample packing list: 20 of 20 lines extracted.
+- Added a printable stowage report with violations, items needing a human, identifications and a sign-off line.
+- Added a 20-line sample packing list (PDF and CSV) with hidden hazards and one mismatched UN number.
+- Raised the function time limit to 120 s for longer manifests.
 - Added Test C: 7 real misdeclared cargo declarations from container-ship fire investigations, run once. Model alone and StowCheck both 4/7 flagged or sent to a human; 3 cleared by both (published as a limit).
 - Added Test D: 30 held-out descriptions, written after prompts were frozen, run once. UN exact on 24 clear DG: 15 alone vs 21 StowCheck; 0 dangerous cargo called safe on either side. First attempt had 9 API timeouts; re-run at lower concurrency, both runs kept.
 - Added misdeclaration check: a typed UN number not in 172.101 is rejected, and one whose description reads like a different class or ordinary goods is flagged.

@@ -23,7 +23,8 @@ class Line(BaseModel):
 
 
 class Manifest(BaseModel):
-    lines: list[Line]
+    lines: list[Line] = []
+    document_text: str = ""  # when set, the AI extracts cargo lines from a document instead of checking
 
 
 def _identify(description: str) -> dict:
@@ -89,6 +90,12 @@ def home():
 @app.post("/api/index")  # Vercel rewrites every path to the function at /api/index
 @app.post("/")
 def check(m: Manifest):
+    if m.document_text.strip():
+        try:
+            from stowcheck.llm import extract_lines
+            return {"extracted": extract_lines(m.document_text)}
+        except Exception as e:
+            return {"extracted": [], "error": str(e)[:200]}
     from concurrent.futures import ThreadPoolExecutor
     lines = m.lines[:25]
     with ThreadPoolExecutor(8) as ex:

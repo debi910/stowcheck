@@ -9,6 +9,12 @@ You paste a container ship manifest in plain words, such as "pool chlorine table
 - A container ship fire breaks out about every 17 days, and misdeclared or undeclared dangerous goods are a leading cause (Allianz *Safety & Shipping Review 2026*, cited by the [World Shipping Council](https://www.worldshipping.org/news/misdeclared-dangerous-goods-remain-a-persistent-threat-to-shipping-and-supply-chains) and [gCaptain](https://gcaptain.com/containership-fire-breaks-out-every-17-days-as-misdeclared-cargo-remains-major-threat/)).
 - The [DGEval benchmark](https://arxiv.org/abs/2608.21036) (Aug 2026, NCB Hazcheck and Durham University) tested 13 frontier models on the dangerous goods code. Even the best scored only about 50% on stowage and segregation ([natcargo](https://natcargo.org/dgeval/)).
 
+## What you can do with it
+
+- **Upload the document you already have.** Drop a packing list, commercial invoice or manifest (PDF, Excel or CSV). The file is read in your browser, the AI pulls out the cargo lines and container numbers, and you review them before anything is checked. A sample 20-line packing list is in `public/samples/`.
+- **Get a stowage report.** One printable page (save as PDF) with the violations, the lines that need a human, what each line was identified as, and a sign-off line for the dangerous-goods officer.
+- **Catch some misdeclarations.** A UN number that is not in the 172.101 table is rejected. A typed UN number whose description reads like a different hazard class, or like ordinary goods, is flagged.
+
 ## How it works
 
 The AI does the language work and the code applies the rules.

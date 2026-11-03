@@ -96,6 +96,19 @@ h2{font-size:28px;letter-spacing:-.03em;font-weight:650;margin:0 0 6px;line-heig
 .benchfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid var(--line);flex-wrap:wrap}
 .hint{font-size:12.5px;color:var(--mut)}
 
+.drop{display:flex;align-items:center;gap:14px;border:1.5px dashed var(--line2);border-radius:12px;padding:16px 18px;margin-bottom:12px;cursor:pointer;background:var(--sub);transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--fg);background:#fff}
+.drop>svg{flex:none;color:var(--mut)}
+.drop>div{flex:1;min-width:0}
+.drop b{display:block;font-size:14px;font-weight:600}
+.drop span{display:block;font-size:13px;color:var(--mut)}
+.drop.busy{pointer-events:none;opacity:.7}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+#report{display:none}
+@media print{body>*:not(#report){display:none!important}#report{display:block;font:12px/1.5 Inter,Arial,sans-serif;color:#000}
+#report h1{font-size:20px;margin:0 0 4px;letter-spacing:0}#report table{width:100%;border-collapse:collapse;margin:8px 0 16px}
+#report th,#report td{border:1px solid #bbb;padding:5px 7px;text-align:left;vertical-align:top}#report th{background:#eee}
+#report h2{font-size:14px;margin:16px 0 4px}#report .sig{margin-top:30px;display:flex;gap:40px}#report .sig div{border-top:1px solid #000;padding-top:4px;width:220px}}
 .steps{padding:18px 20px;margin-top:14px}
 .step{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--dim);padding:5px 0;transition:color .2s}
 .step .ic{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line2);flex:none;position:relative;transition:all .2s var(--ease)}
@@ -235,7 +248,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <div class="stats reveal" id="stats"></div>
 
   <section id="check">
-    <div class="sh"><div class="kicker">Try it</div><h2>Check a manifest</h2><p class="sub">One line per cargo, as it would appear on an invoice. Lines with the same container ID share a box.</p></div>
+    <div class="sh"><div class="kicker">Try it</div><h2>Check a manifest</h2><p class="sub">Upload the packing list or invoice you already have, or type lines yourself. Lines with the same container number share a box.</p></div>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept=".pdf,.csv,.txt,.xlsx,.xls" hidden>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 15V4m0 0L8 8m4-4 4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><b id="dropt">Drop a packing list or invoice here</b><span id="drops">PDF, Excel or CSV. The AI pulls out the cargo lines, and you review them before the check.</span></div>
+      <button class="btn sm" type="button" onclick="event.preventDefault();loadSample()">Try a sample packing list</button>
+    </label>
     <div class="card">
       <div class="thead"><span class="n0"></span><span>Cargo description</span><span>Container</span><span></span></div>
       <div class="rows" id="rows"></div>
@@ -277,6 +296,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div></footer>
 
 <div class="scrim" id="scrim" onclick="closeD()"></div>
+<div id="report"></div>
 <aside class="drawer" id="drawer" aria-hidden="true"></aside>
 <div class="toast" id="toast"></div>
 
@@ -289,7 +309,7 @@ const REPO='https://github.com/debi910/stowcheck/blob/main/';
 const STATS=[
   {b:'~50%',s:'Best frontier-model score on dangerous-goods stowage questions',m:'External benchmark: <a href="https://arxiv.org/abs/2608.21036" target="_blank" rel="noopener">DGEval, 2026</a>'},
   {b:'63% → 88%',s:'Right UN number from plain cargo text, same free model',m:'n = 24 · held-out set, run once · <a href="#eval">details</a>'},
-  {b:'0',s:'Dangerous cargoes StowCheck confidently called “not dangerous”',m:'n = 90 across both description sets · <a href="#eval">details</a>'},
+  {b:'24 → 0',s:'Unsafe segregation answers (too lenient) on 100 cargo pairs',m:'Same free model, alone vs inside StowCheck · <a href="#eval">details</a>'},
 ];
 const FAILS_D=`<div class="h"><span>Where StowCheck missed (held-out)</span><span></span><span></span></div>
   <div><span>Sodium hypochlorite solution</span><span class="mono">UN1791</span><span class="q-t">said dangerous, no row</span></div>
@@ -380,7 +400,50 @@ function render(d){LAST=d;
   mis.forEach((i,k)=>{h+=`<div class="issue amber" style="animation-delay:${150+(viol.length+k)*60}ms"><div class="bar"></div><div><h4>Line ${i.line}: the declaration doesn't match the description</h4><p>${esc(i.mismatch)}</p></div></div>`});
   if(other.length){h+=`<details class="more"><summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>${other.length} other pair${other.length>1?'s':''} must be kept apart on board but are in different containers</summary>`;
     other.forEach(f=>h+=`<div class="mini"><span>${esc(short(f.a))} ↔ ${esc(short(f.b))}</span><b>${esc(f.requirement||'')}</b></div>`);h+='</details>'}
+  h+=`<div class="actions"><button class="btn sm" onclick="report()">Download stowage report (PDF)</button></div>`;
   $('#out').innerHTML=h}
+
+/* ---- upload: read the file in the browser, AI extracts lines, the person reviews ---- */
+const loadJS=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error('Could not load a file reader'));document.head.appendChild(s)});
+async function pdfText(buf){
+  if(!window.pdfjsLib){await loadJS('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;let out='';
+  for(let p=1;p<=Math.min(pdf.numPages,10);p++){const tc=await (await pdf.getPage(p)).getTextContent();const rows={};
+    tc.items.forEach(it=>{const y=Math.round(it.transform[5]);(rows[y]=rows[y]||[]).push([it.transform[4],it.str])});
+    Object.keys(rows).sort((a,b)=>b-a).forEach(y=>{out+=rows[y].sort((a,b)=>a[0]-b[0]).map(x=>x[1]).join('  ')+'\n'})}
+  return out}
+async function fileText(name,buf){const ext=name.toLowerCase().split('.').pop();
+  if(ext==='pdf')return pdfText(buf);
+  if(ext==='xlsx'||ext==='xls'){if(!window.XLSX)await loadJS('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
+    const wb=XLSX.read(buf,{type:'array'});return wb.SheetNames.map(n=>XLSX.utils.sheet_to_csv(wb.Sheets[n])).join('\n')}
+  return new TextDecoder().decode(buf)}
+async function ingest(name,buf){const dr=$('#drop');dr.classList.add('busy');$('#dropt').textContent=`Reading ${name}…`;$('#drops').textContent='The AI is pulling out the cargo lines.';
+  try{const text=await fileText(name,buf);if(!text.trim())throw new Error('No text found. Is it a scanned image?');
+    const r=await fetch('/api/index',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({document_text:text})});
+    const d=await r.json().catch(()=>({}));if(!r.ok||!(d.extracted||[]).length)throw new Error(d.error||`No cargo lines found (server answered ${r.status})`);
+    $('#rows').innerHTML='';n=0;d.extracted.forEach(l=>add(l.description,l.container));$('#out').innerHTML='';
+    $('#dropt').textContent=`${d.extracted.length} lines read from ${name}`;$('#drops').textContent='Check them below, fix anything wrong, then press Check stowage.';
+    toast(`${d.extracted.length} cargo lines extracted`);document.querySelector('.thead').scrollIntoView({behavior:'smooth',block:'start'})}
+  catch(e){$('#dropt').textContent='Could not read that file';$('#drops').textContent=e.message}
+  finally{dr.classList.remove('busy')}}
+$('#file').onchange=async e=>{const f=e.target.files[0];if(f)ingest(f.name,await f.arrayBuffer());e.target.value=''};
+const dr=$('#drop');['dragenter','dragover'].forEach(t=>dr.addEventListener(t,e=>{e.preventDefault();dr.classList.add('over')}));
+['dragleave','drop'].forEach(t=>dr.addEventListener(t,e=>{e.preventDefault();dr.classList.remove('over')}));
+dr.addEventListener('drop',async e=>{const f=e.dataTransfer.files[0];if(f)ingest(f.name,await f.arrayBuffer())});
+async function loadSample(){const r=await fetch('samples/sample_packing_list.pdf');ingest('sample_packing_list.pdf',await r.arrayBuffer())}
+
+/* ---- printable stowage report ---- */
+function report(){const d=LAST;if(!d)return;const viol=d.findings.filter(f=>f.status==='violation');const other=d.findings.filter(f=>f.status!=='violation');
+  const q=d.items.filter(i=>unsure(i)||i.mismatch);const now=new Date();
+  $('#report').innerHTML=`<h1>Dangerous goods stowage check</h1><div>Generated by StowCheck on ${now.toISOString().slice(0,16).replace('T',' ')} UTC · Rules: US 49 CFR 172.101, 176.83, 176.84 · Research demo, a qualified person must confirm.</div>
+  <h2>Result: ${viol.length?viol.length+' violation(s) in shared containers':q.length?'No violations found, check incomplete':'No violations found'}</h2>
+  ${viol.length?`<table><tr><th>Container</th><th>Cargo A</th><th>Cargo B</th><th>Requirement</th><th>Rules</th></tr>${viol.map(f=>`<tr><td>${esc(d.items[idx(f.a)-1]?.container)}</td><td>${esc(f.a)}</td><td>${esc(f.b)}</td><td>${esc(f.requirement)}</td><td>${esc((f.reasons||[]).map(r=>r.split(':')[0]).join('; '))}</td></tr>`).join('')}</table>`:''}
+  ${q.length?`<h2>Needs a human (${q.length})</h2><table><tr><th>Line</th><th>Description</th><th>Reason</th></tr>${q.map(i=>`<tr><td>${i.line}</td><td>${esc(i.description)}</td><td>${esc(i.mismatch||i.evidence||'Not enough information to classify')}</td></tr>`).join('')}</table>`:''}
+  <h2>Cargo lines</h2><table><tr><th>#</th><th>Container</th><th>Description</th><th>Identified as (49 CFR 172.101)</th><th>Class</th></tr>${d.items.map(i=>`<tr><td>${i.line}</td><td>${esc(i.container)}</td><td>${esc(i.description)}</td><td>${esc(i.identified?i.identified.replace(/^49 CFR 172\.101:\s*/,''):unsure(i)?'Not identified':'Not regulated')}</td><td>${esc(i.class||'')}</td></tr>`).join('')}</table>
+  ${other.length?`<h2>Pairs to keep apart on board (different containers)</h2><table><tr><th>Cargo A</th><th>Cargo B</th><th>Requirement</th></tr>${other.map(f=>`<tr><td>${esc(f.a)}</td><td>${esc(f.b)}</td><td>${esc(f.requirement)}</td></tr>`).join('')}</table>`:''}
+  <div class="sig"><div>Checked by</div><div>Date</div></div>`;
+  window.print()}
 
 function openD(i){const it=LAST.items[i];const q=unsure(it);
   const name=it.identified?it.identified.replace(/^49 CFR 172\.101:\s*/,''):(q?'Not identified':'Not regulated as dangerous goods');
