@@ -13,6 +13,8 @@ You paste a container ship manifest in plain words, such as "pool chlorine table
 
 - **Upload the document you already have.** Drop a packing list, commercial invoice or manifest (PDF, Excel or CSV). The file is read in your browser, the AI pulls out the cargo lines and container numbers, and you review them before anything is checked. A sample 20-line packing list is in `public/samples/`.
 - **Get a stowage report.** One printable page (save as PDF) with the violations, the lines that need a human, what each line was identified as, and a sign-off line for the dangerous-goods officer.
+- **A decision per container.** Each container is marked *re-stuff* (a violation inside), *hold* (a line needs a person, or its declaration looks wrong) or *load*. Containers holding category C or D goods are marked *on deck only* (172.101 column 10A), and location codes such as "protected from sources of heat" are listed per line.
+- **Combustible ordinary cargo.** Goods with 176.84 codes 4 or 59 (for example calcium hypochlorite, ammonium nitrate) are flagged when they share a container with ordinary cargo that burns, such as textiles, plastics, paper, wood or food. Which ordinary goods count as combustible comes from a fixed keyword list, not the AI.
 - **Catch some misdeclarations.** A UN number that is not in the 172.101 table is rejected. A typed UN number whose description reads like a different hazard class, or like ordinary goods, is flagged.
 
 ## How it works
@@ -80,6 +82,7 @@ For context only: the external [DGEval benchmark](https://arxiv.org/abs/2608.210
 ## Limits
 
 - The rules are US 49 CFR only. The IMDG Code is copyrighted, so it is not included.
+- The combustible check for ordinary goods uses a keyword list, so unusual wording can slip past it.
 - Class 1 (explosives) compatibility groups, the 176.83(a) exceptions, and container-ship spacing distances (table 176.83(f)) are not modelled.
 - The test sets are small (100 pairs, 60, 30 and 7 descriptions) and hand-built by the team, except the 7 incident declarations, which come from published investigations.
 - Words alone cannot expose a deliberately false declaration (see Test C).

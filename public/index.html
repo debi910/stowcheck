@@ -135,6 +135,7 @@ h2{font-size:28px;letter-spacing:-.03em;font-weight:650;margin:0 0 6px;line-heig
 .boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
 .cont{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--sub);animation:fade .4s var(--ease) both}
 .cont.bad{border-color:var(--red-line);background:var(--red-bg)}
+.why{font-size:12px;color:var(--mut);margin:-4px 0 6px}
 .cid{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;margin-bottom:8px;color:var(--fg2)}
 .tag{font-family:Inter,sans-serif;font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;border:1px solid}
 .tag.r{color:var(--red);border-color:var(--red-line);background:#fff}
@@ -389,15 +390,17 @@ function render(d){LAST=d;
   let h=`<div class="verdict ${cls}"><div class="vi">${IC[cls]}</div><div><div class="big">${title}</div><div class="meta">${meta.join(' · ')}</div></div></div>`;
   const byC={};d.items.forEach(i=>{const k=i.container||'No container';(byC[k]=byC[k]||[]).push(i)});
   const badC=new Set(viol.map(f=>d.items[idx(f.a)-1]?.container));
-  h+=`<div class="card yard"><div class="yardhead"><h3>Containers</h3><div class="legend"><span><i style="background:var(--red)"></i>Violation inside</span><span><i style="background:var(--amber)"></i>Needs a human</span><span>Click a line for details</span></div></div><div class="boxes">`;
-  Object.entries(byC).forEach(([c,its],k)=>{const bad=badC.has(c);const q=its.some(i=>unsure(i)||i.mismatch);
-    h+=`<div class="cont ${bad?'bad':''}" style="animation-delay:${k*50}ms"><div class="cid">${esc(c)}${bad?'<span class="tag r">Violation</span>':q?'<span class="tag a">Check</span>':'<span class="tag g">OK</span>'}</div>`;
+  h+=`<div class="card yard"><div class="yardhead"><h3>Containers</h3><div class="legend"><span><i style="background:var(--red)"></i>Re-stuff</span><span><i style="background:var(--amber)"></i>Hold for a person</span><span>Click a line for details</span></div></div><div class="boxes">`;
+  const DEC={};(d.containers||[]).forEach(x=>DEC[x.container||'No container']=x);
+  Object.entries(byC).forEach(([c,its],k)=>{const bad=badC.has(c);const q=its.some(i=>unsure(i)||i.mismatch);const x=DEC[c]||{};
+    const tag=x.decision==='re-stuff'||bad?'<span class="tag r">Re-stuff</span>':x.decision==='hold'||q?'<span class="tag a">Hold</span>':'<span class="tag g">Load</span>';
+    h+=`<div class="cont ${bad?'bad':''}" style="animation-delay:${k*50}ms"><div class="cid">${esc(c)}${tag}</div>${x.why?`<div class="why">${esc(x.why)}${(x.on_deck_only||[]).length?` · on deck only (${x.on_deck_only.map(esc).join(', ')})`:''}</div>`:''}`;
     its.forEach(i=>{h+=`<button class="chip" onclick="openD(${i.line-1})">${i.un?dia(i.class):unsure(i)?'<span class="dia" style="background:var(--amber-bg);color:var(--amber);border-color:var(--amber-line)"><span>?</span></span>':'<span class="dia" style="background:#fff;color:var(--dim)"><span>–</span></span>'}<span class="t">${esc(short(i.description))}</span></button>`});
     h+='</div>'});
   h+='</div></div>';
   viol.forEach((f,k)=>{const A=d.items[idx(f.a)-1];
     h+=`<div class="issue" style="animation-delay:${150+k*60}ms"><div class="bar"></div><div><h4>${esc(short(f.a))} and ${esc(short(f.b))} share ${esc(A?.container||'a container')}</h4>
-    <p>The rules say these must be stowed ${LV[f.level]||'apart from'} each other, so they cannot travel in the same container.</p><div class="cites">${(f.reasons||[]).map(r=>`<span class="cite">${esc(r.split(':')[0])}</span>`).join('')}</div></div></div>`});
+    <p>The rules say these must be stowed ${LV[f.level]||'apart from'} each other, so they cannot travel in the same container.</p><div class="cites">${(f.reasons||[]).map(r=>`<span class="cite">${esc(r.split(':')[0])}</span>`).join('')}</div>${f.caveat?`<div class="note a" style="margin-top:10px">${esc(f.caveat)}</div>`:''}</div></div>`});
   mis.forEach((i,k)=>{h+=`<div class="issue amber" style="animation-delay:${150+(viol.length+k)*60}ms"><div class="bar"></div><div><h4>Line ${i.line}: the declaration doesn't match the description</h4><p>${esc(i.mismatch)}</p></div></div>`});
   if(other.length){h+=`<details class="more"><summary><svg class="chev" width="12" height="12" viewBox="0 0 12 12"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>${other.length} other pair${other.length>1?'s':''} must be kept apart on board but are in different containers</summary>`;
     other.forEach(f=>h+=`<div class="mini"><span>${esc(short(f.a))} ↔ ${esc(short(f.b))}</span><b>${esc(f.requirement||'')}</b></div>`);h+='</details>'}
@@ -438,8 +441,9 @@ async function loadSample(){const r=await fetch('samples/sample_packing_list.pdf
 function report(){const d=LAST;if(!d)return;const viol=d.findings.filter(f=>f.status==='violation');const other=d.findings.filter(f=>f.status!=='violation');
   const q=d.items.filter(i=>unsure(i)||i.mismatch);const now=new Date();
   $('#report').innerHTML=`<h1>Dangerous goods stowage check</h1><div>Generated by StowCheck on ${now.toISOString().slice(0,16).replace('T',' ')} UTC · Rules: US 49 CFR 172.101, 176.83, 176.84 · Research demo, a qualified person must confirm.</div>
+  ${(d.containers||[]).length?`<h2>Container decisions</h2><table><tr><th>Container</th><th>Decision</th><th>Why</th><th>On deck only</th></tr>${d.containers.map(x=>`<tr><td>${esc(x.container)}</td><td><b>${esc(x.decision)}</b></td><td>${esc(x.why)}</td><td>${esc((x.on_deck_only||[]).join(', '))}</td></tr>`).join('')}</table>`:''}
   <h2>Result: ${viol.length?viol.length+' violation(s) in shared containers':q.length?'No violations found, check incomplete':'No violations found'}</h2>
-  ${viol.length?`<table><tr><th>Container</th><th>Cargo A</th><th>Cargo B</th><th>Requirement</th><th>Rules</th></tr>${viol.map(f=>`<tr><td>${esc(d.items[idx(f.a)-1]?.container)}</td><td>${esc(f.a)}</td><td>${esc(f.b)}</td><td>${esc(f.requirement)}</td><td>${esc((f.reasons||[]).map(r=>r.split(':')[0]).join('; '))}</td></tr>`).join('')}</table>`:''}
+  ${viol.length?`<table><tr><th>Container</th><th>Cargo A</th><th>Cargo B</th><th>Requirement</th><th>Rules</th></tr>${viol.map(f=>`<tr><td>${esc(d.items[idx(f.a)-1]?.container)}</td><td>${esc(f.a)}</td><td>${esc(f.b)}</td><td>${esc(f.requirement)}</td><td>${esc((f.reasons||[]).map(r=>r.split(':')[0]).join('; '))}${f.caveat?' · '+esc(f.caveat):''}</td></tr>`).join('')}</table>`:''}
   ${q.length?`<h2>Needs a human (${q.length})</h2><table><tr><th>Line</th><th>Description</th><th>Reason</th></tr>${q.map(i=>`<tr><td>${i.line}</td><td>${esc(i.description)}</td><td>${esc(i.mismatch||i.evidence||'Not enough information to classify')}</td></tr>`).join('')}</table>`:''}
   <h2>Cargo lines</h2><table><tr><th>#</th><th>Container</th><th>Description</th><th>Identified as (49 CFR 172.101)</th><th>Class</th></tr>${d.items.map(i=>`<tr><td>${i.line}</td><td>${esc(i.container)}</td><td>${esc(i.description)}</td><td>${esc(i.identified?i.identified.replace(/^49 CFR 172\.101:\s*/,''):unsure(i)?'Not identified':'Not regulated')}</td><td>${esc(i.class||'')}</td></tr>`).join('')}</table>
   ${other.length?`<h2>Pairs to keep apart on board (different containers)</h2><table><tr><th>Cargo A</th><th>Cargo B</th><th>Requirement</th></tr>${other.map(f=>`<tr><td>${esc(f.a)}</td><td>${esc(f.b)}</td><td>${esc(f.requirement)}</td></tr>`).join('')}</table>`:''}
@@ -456,6 +460,7 @@ function openD(i){const it=LAST.items[i];const q=unsure(it);
    ${(it.groups||[]).length?`<dt>Chemical families</dt><dd>${it.groups.map(g=>`<span class="cite" style="margin:0 4px 4px 0;display:inline-block">${esc(g)}</span>`).join('')}</dd>`:''}
    ${it.evidence?`<dt>Why</dt><dd style="color:var(--fg2)">${esc(it.evidence)}</dd>`:''}
    ${it.confidence!=null?`<dt>AI confidence</dt><dd>${pct}%<div class="conf"><i style="width:${pct}%"></i></div></dd>`:''}</dl>
+   ${(it.stowage||[]).length?`<div style="margin-top:16px"><div style="font-size:13px;color:var(--mut);margin-bottom:6px">Where it may be stowed</div>${it.stowage.map(n=>`<div class="cite" style="display:block;margin-bottom:6px;white-space:normal">${esc(n)}</div>`).join('')}</div>`:''}
    ${it.mismatch?`<div class="note a">${esc(it.mismatch)}</div>`:''}
    ${q?`<div class="note a">The description doesn't say enough to classify this safely. A dangerous-goods officer should check the safety data sheet.</div>`:''}
    ${it.error?`<div class="note a">The AI step failed for this line: ${esc(it.error)}</div>`:''}`;

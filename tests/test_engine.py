@@ -40,3 +40,22 @@ def test_same_container_violation():
 
 def test_unknown_un():
     assert R.pair(Cargo("a", "UN0000"), Cargo("b", "UN1090"))["status"] == "unknown"
+
+
+def test_on_deck_only_category():
+    r = Rules()
+    notes = r.stowage_notes(r.lookup("UN1748"))
+    assert any("on deck only" in n for n in notes)  # calcium hypochlorite is category D
+    assert not any("on deck only" in n for n in r.stowage_notes(r.lookup("UN1090")))  # acetone is category B
+
+
+def test_combustible_code_4_same_container():
+    r = Rules()
+    hypo = Cargo(label="#1 pool chlorine", un="UN1748", container="C1")
+    out = r.combustible_conflicts([hypo], [("#2 plastic chairs", "C1"), ("#3 rice", "C2")])
+    assert len(out) == 1 and out[0]["b"] == "#2 plastic chairs" and "code 4" in out[0]["reasons"][0]
+
+
+def test_codes_with_trailing_punctuation_are_read():
+    r = Rules()
+    assert "52" in r.lookup("UN1823").codes  # 10B lists it as "52." in the source table

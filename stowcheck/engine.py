@@ -121,7 +121,7 @@ class Rules:
                     packing_group=r["packing_group"],
                     labels=[x.strip() for x in r["label_codes"].split(",") if x.strip()],
                     stowage_cat=r["vessel_stowage_10a"],
-                    codes=[x.strip() for x in r["vessel_other_10b"].split(",") if x.strip()],
+                    codes=[x.strip().rstrip(".*") for x in r["vessel_other_10b"].split(",") if x.strip().rstrip(".*")],
                 )
                 self.rows.setdefault(e.un, []).append(e)
 
@@ -222,6 +222,43 @@ class Rules:
             "a": ea.cite,
             "b": eb.cite,
         }
+
+    # ---- where a single cargo may go (column 10A, location codes) ----------------
+    ON_DECK_ONLY = {"C", "D"}
+
+    def stowage_notes(self, e: Entry) -> list[str]:
+        """Column 10A category and 10B codes that restrict where this one cargo may be stowed."""
+        notes = []
+        if e.stowage_cat in self.ON_DECK_ONLY:
+            notes.append(f"172.101 column 10A: stowage category {e.stowage_cat}, on deck only")
+        for code in e.codes:
+            text = self.codes.get(code, "").strip()
+            if re.search(r"living quarters|sources of heat|shaded|cool|well ventilated", text, re.I):
+                notes.append(f"176.84 code {code} on {e.un}: {text}")
+        return notes
+
+    COMBUSTIBLE_CODES = {"4": "may not share a cargo transport unit with combustible material",
+                         "59": "must be separated from combustible materials"}
+
+    def combustible_conflicts(self, cargos: list[Cargo], others: list[tuple[str, str]]) -> list[dict]:
+        """Codes 4 and 59 against ordinary cargo in the same container. `others` = (label, container) of
+        non-regulated lines that are combustible (textiles, plastics, paper, wood, food and similar)."""
+        out = []
+        for c in cargos:
+            e = self.lookup(c.un, c.packing_group)
+            if not e or not c.container:
+                continue
+            for code, rule in self.COMBUSTIBLE_CODES.items():
+                if code not in e.codes:
+                    continue
+                for label, box in others:
+                    if box == c.container:
+                        out.append({"a": c.label, "b": label, "level": 2, "status": "violation",
+                                    "requirement": "Separated from (combustible material)",
+                                    "reasons": [f"176.84 code {code} on {e.un}: {self.codes[code].strip()}",
+                                                "176.83(d): may not share one cargo transport unit"],
+                                    "cite_a": e.cite, "cite_b": f"{label}: ordinary cargo, combustible"})
+        return out
 
     def check_manifest(self, cargos: list[Cargo]) -> list[dict]:
         out = []

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-04
+- Gaps from the head-to-head review fixed: on-deck-only stowage (column 10A categories C and D) and location codes per line; 176.84 codes 4 and 59 checked against combustible ordinary cargo in the same container; a re-stuff / hold / load decision per container; a doubtful declaration is now shown on the violation it affects. Column 10B codes written with trailing punctuation (e.g. "52.") are now read. Test A table-only score unchanged (88). 3 new unit tests.
 - Demo resilience on Groq's free tier: three parallel lines instead of eight, Retry-After honoured, automatic switch to another free model when a daily quota runs out. The sample packing list answers from saved results of a real pipeline run (data/demo_cache.json); the page labels them.
 - The page's default manifest is now the 20-line sample packing list.
 - Added Groq gpt-oss-120b (the live demo's model) results for Tests B, C and D. Held-out UN exact: 9/24 alone vs 21/24 StowCheck; development set 35.9% vs 79.5%, confident DG misses 4 vs 0; incidents 5/7 vs 4/7. Page and README now show both models.
