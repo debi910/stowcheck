@@ -27,9 +27,20 @@ The AI does the language work and the code applies the rules.
 
 ## Results
 
-All results use the same free model in both arms: Gemma 4 26B through the Gemini API free tier. The live demo runs a different free model (Groq, currently openai/gpt-oss-120b), so the demo's answers can differ from these numbers. Data, scripts and every answer are in `eval/`.
+Each test runs a free model alone and the same model inside StowCheck. Two models were tested: **gpt-oss-120b on Groq**, which is the model behind the live demo, and **Gemma 4 26B** through the Gemini API free tier. Requests that hit free-tier rate limits or timeouts were asked again with the same prompt, and the result files record which ones. Data, scripts and every answer are in `eval/` (Groq results are the `groq_*` files).
 
-**Held-out test (Test D): 30 new descriptions, written after the prompts were frozen and run once.** 24 clear dangerous goods, 3 ordinary goods, 3 vague or undecidable.
+**Summary on the demo model (gpt-oss-120b):**
+
+| Test | Model alone | StowCheck |
+|---|---|---|
+| Held-out, right UN number (24 clear DG, run once) | 9 / 24 (37.5%) | **21 / 24 (87.5%)** |
+| Development set, right UN number (39 clear DG) | 35.9% | **79.5%** |
+| Development set, dangerous cargo confidently called safe | 4 | **0** |
+| Real incident declarations caught (7) | 5 | 4 |
+
+The Gemma 4 details follow.
+
+**Held-out test (Test D), Gemma 4: 30 new descriptions, written after the prompts were frozen and run once.** 24 clear dangerous goods, 3 ordinary goods, 3 vague or undecidable.
 
 | | UN number right (clear DG) | Dangerous cargo called safe |
 |---|---|---|
@@ -38,23 +49,23 @@ All results use the same free model in both arms: Gemma 4 26B through the Gemini
 
 The first attempt hit 9 API timeouts on the StowCheck side, so the whole set was re-run at lower concurrency. Both runs are published (`test_d_*_run1.json`: 13 vs 16 of 24). StowCheck's misses: sodium hypochlorite and ammonia solution (said dangerous but picked no row), carbon dioxide (API error, counted wrong). It also called the vague "Car parts (used)" not dangerous, where the model alone said "not sure".
 
-**Real incidents (Test C): 7 declarations taken from container-ship fire investigations.** The real cargo was dangerous every time (Yantian Express 2019, KMTC Hong Kong 2019, Gard case files on calcium hypochlorite). Sources are in `eval/test_c_incidents.csv`.
+**Real incidents (Test C), Gemma 4: 7 declarations taken from container-ship fire investigations.** The real cargo was dangerous every time (Yantian Express 2019, KMTC Hong Kong 2019, Gard case files on calcium hypochlorite). Sources are in `eval/test_c_incidents.csv`.
 
 | | Flagged or sent to a human | Cleared as safe |
 |---|---|---|
 | Model alone | 4 / 7 | 3 |
 | StowCheck | 4 / 7 | 3 |
 
-StowCheck is no better here. "Coconut pellets", "Dolls" and "Calcium chloride" describe harmless goods, so no reader of the words alone could catch them. This is why StowCheck also checks a typed UN number against its description, rejects UN numbers that are not in the table, and never reports "safe" while a line is unsure.
+StowCheck is no better here. On gpt-oss it is one worse (4 vs 5); the extra catch by the model alone was flagging "Calcium chloride", which on its own is not regulated. "Coconut pellets", "Dolls" and "Calcium chloride" describe harmless goods, so no reader of the words alone could catch them. This is why StowCheck also checks a typed UN number against its description, rejects UN numbers that are not in the table, and never reports "safe" while a line is unsure.
 
-**Development set (Test B): 60 invoice-style descriptions.** The prompts were written while looking at this set, so treat it as a development score.
+**Development set (Test B), Gemma 4: 60 invoice-style descriptions.** The prompts were written while looking at this set, so treat it as a development score.
 
 | | UN number right (39 clear DG) | Hard items (7) | Dangerous cargo called safe |
 |---|---|---|---|
 | Model alone | 66.7% | 1 / 7 | 2 |
 | **StowCheck** | **87.2%** | **6 / 7** | **0** |
 
-**Segregation pairs (Test A): 100 pairs of common dangerous goods. Task: name the required segregation level.**
+**Segregation pairs (Test A), Gemma 4: 100 pairs of common dangerous goods. Task: name the required segregation level.**
 
 | | Exact | Too lenient (unsafe) | No answer |
 |---|---|---|---|

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-04
+- Added Groq gpt-oss-120b (the live demo's model) results for Tests B, C and D. Held-out UN exact: 9/24 alone vs 21/24 StowCheck; development set 35.9% vs 79.5%, confident DG misses 4 vs 0; incidents 5/7 vs 4/7. Page and README now show both models.
+
 ## 2026-11-03
 - Added document upload: PDF (pdf.js), Excel (SheetJS) and CSV are read in the browser; the AI extracts cargo lines and container numbers for the person to review before checking. Tested on the sample packing list: 20 of 20 lines extracted.
 - Added a printable stowage report with violations, items needing a human, identifications and a sign-off line.
