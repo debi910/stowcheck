@@ -1,0 +1,624 @@
+{
+  "summary": {
+    "mode": "baseline",
+    "n": 60,
+    "dg_detection_clear": 0.979,
+    "un_exact_clear_dg": 0.359,
+    "un_exact_hard": "0/7",
+    "abstain_on_vague": "3/5",
+    "missed_dg_confident": 4,
+    "model": "openai/gpt-oss-120b",
+    "errors": 0,
+    "errors_first_pass": 6,
+    "errors_reasked": [
+      "B005",
+      "B012",
+      "B020",
+      "B030",
+      "B049",
+      "B051"
+    ]
+  },
+  "rows": [
+    {
+      "id": "B001",
+      "gold_dg": "yes",
+      "gold_un": "UN1266",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1993",
+      "abstain": false,
+      "confidence": 0.96
+    },
+    {
+      "id": "B002",
+      "gold_dg": "yes",
+      "gold_un": "UN1263",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1266",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B003",
+      "gold_dg": "yes",
+      "gold_un": "UN3480",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN3481",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B004",
+      "gold_dg": "yes",
+      "gold_un": "UN3481",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN3481",
+      "abstain": false,
+      "confidence": 0.96
+    },
+    {
+      "id": "B005",
+      "gold_dg": "yes",
+      "gold_un": "UN1170",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1170",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B006",
+      "gold_dg": "yes",
+      "gold_un": "UN1748",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1791",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B007",
+      "gold_dg": "yes",
+      "gold_un": "UN1361",
+      "ambiguous": true,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B008",
+      "gold_dg": "yes",
+      "gold_un": "UN1950",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1263",
+      "abstain": false,
+      "confidence": 0.96
+    },
+    {
+      "id": "B009",
+      "gold_dg": "yes",
+      "gold_un": "UN2037",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1978",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B010",
+      "gold_dg": "yes",
+      "gold_un": "UN1944",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1950",
+      "abstain": false,
+      "confidence": 0.96
+    },
+    {
+      "id": "B011",
+      "gold_dg": "yes",
+      "gold_un": "UN2794",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN2794",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B012",
+      "gold_dg": "yes",
+      "gold_un": "UN1823",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1824",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B013",
+      "gold_dg": "yes",
+      "gold_un": "UN1789",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1789",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B014",
+      "gold_dg": "yes",
+      "gold_un": "UN2014",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1993",
+      "abstain": false,
+      "confidence": 1.0
+    },
+    {
+      "id": "B015",
+      "gold_dg": "yes",
+      "gold_un": "UN1263",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1263",
+      "abstain": false,
+      "confidence": 0.95
+    },
+    {
+      "id": "B016",
+      "gold_dg": "yes",
+      "gold_un": "UN1210",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1263",
+      "abstain": false,
+      "confidence": 0.85
+    },
+    {
+      "id": "B017",
+      "gold_dg": "yes",
+      "gold_un": "UN1133",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1993",
+      "abstain": false,
+      "confidence": 0.62
+    },
+    {
+      "id": "B018",
+      "gold_dg": "yes",
+      "gold_un": "UN1219",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1219",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B019",
+      "gold_dg": "yes",
+      "gold_un": "UN1090",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1090",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B020",
+      "gold_dg": "yes",
+      "gold_un": "UN1230",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1230",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B021",
+      "gold_dg": "yes",
+      "gold_un": "UN1202",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1202",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B022",
+      "gold_dg": "yes",
+      "gold_un": "UN2067",
+      "ambiguous": true,
+      "pred_dg": true,
+      "pred_un": "UN1942",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B023",
+      "gold_dg": "yes",
+      "gold_un": "UN1350",
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B024",
+      "gold_dg": "yes",
+      "gold_un": "UN1490",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1823",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B025",
+      "gold_dg": "yes",
+      "gold_un": "UN1689",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1845",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B026",
+      "gold_dg": "yes",
+      "gold_un": "UN2789",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN2789",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B027",
+      "gold_dg": "yes",
+      "gold_un": "UN2031",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN2030",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B028",
+      "gold_dg": "yes",
+      "gold_un": "UN0336",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN0012",
+      "abstain": false,
+      "confidence": 0.95
+    },
+    {
+      "id": "B029",
+      "gold_dg": "yes",
+      "gold_un": "UN3159",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1978",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B030",
+      "gold_dg": "yes",
+      "gold_un": "UN1978",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1011",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B031",
+      "gold_dg": "yes",
+      "gold_un": "UN1072",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1072",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B032",
+      "gold_dg": "yes",
+      "gold_un": "UN3090",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN3090",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B033",
+      "gold_dg": "yes",
+      "gold_un": "UN3528",
+      "ambiguous": true,
+      "pred_dg": true,
+      "pred_un": "UN1993",
+      "abstain": false,
+      "confidence": 0.7
+    },
+    {
+      "id": "B034",
+      "gold_dg": "yes",
+      "gold_un": "UN1386",
+      "ambiguous": true,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.85
+    },
+    {
+      "id": "B035",
+      "gold_dg": "yes",
+      "gold_un": "UN1374",
+      "ambiguous": true,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B036",
+      "gold_dg": "yes",
+      "gold_un": "UN1396",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1943",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B037",
+      "gold_dg": "yes",
+      "gold_un": "UN1402",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1445",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B038",
+      "gold_dg": "yes",
+      "gold_un": "UN3018",
+      "ambiguous": true,
+      "pred_dg": true,
+      "pred_un": "UN3175",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B039",
+      "gold_dg": "yes",
+      "gold_un": "UN1791",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1791",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B040",
+      "gold_dg": "yes",
+      "gold_un": "UN2209",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1993",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B041",
+      "gold_dg": "yes",
+      "gold_un": "UN3268",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1499",
+      "abstain": false,
+      "confidence": 0.95
+    },
+    {
+      "id": "B042",
+      "gold_dg": "yes",
+      "gold_un": "UN1845",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1845",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B043",
+      "gold_dg": "yes",
+      "gold_un": "UN2213",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN3170",
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B044",
+      "gold_dg": "yes",
+      "gold_un": "UN1495",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN1479",
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B045",
+      "gold_dg": "yes",
+      "gold_un": "UN3105",
+      "ambiguous": true,
+      "pred_dg": true,
+      "pred_un": "UN1942",
+      "abstain": false,
+      "confidence": 0.98
+    },
+    {
+      "id": "B046",
+      "gold_dg": "yes",
+      "gold_un": "UN1866",
+      "ambiguous": false,
+      "pred_dg": true,
+      "pred_un": "UN2631",
+      "abstain": false,
+      "confidence": 0.95
+    },
+    {
+      "id": "B047",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B048",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B049",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B050",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B051",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B052",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B053",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.97
+    },
+    {
+      "id": "B054",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.96
+    },
+    {
+      "id": "B055",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B056",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": false,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.99
+    },
+    {
+      "id": "B057",
+      "gold_dg": "yes",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": 0.2
+    },
+    {
+      "id": "B058",
+      "gold_dg": "yes",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": 0.2
+    },
+    {
+      "id": "B059",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": false,
+      "pred_un": null,
+      "abstain": false,
+      "confidence": 0.9
+    },
+    {
+      "id": "B060",
+      "gold_dg": "no",
+      "gold_un": null,
+      "ambiguous": true,
+      "pred_dg": null,
+      "pred_un": null,
+      "abstain": true,
+      "confidence": 0.2
+    }
+  ]
+}
