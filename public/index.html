@@ -263,7 +263,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
           <button class="btn sm" onclick="add('','')">Add line</button>
           <button class="btn sm" onclick="sample(true)">Reset example</button>
         </div>
-        <div style="display:flex;gap:12px;align-items:center"><span class="hint hide-s">Takes about 10 seconds</span>
+        <div style="display:flex;gap:12px;align-items:center"><span class="hint hide-s">New lines run live on a free AI tier, about a minute for 5 lines</span>
         <button class="btn primary" id="go" onclick="run()">Check stowage</button></div>
       </div>
     </div>
@@ -385,6 +385,7 @@ function render(d){LAST=d;
   const title=viol.length?`${viol.length} stowage violation${viol.length>1?'s':''} found`:(unk.length||mis.length)?'No violations found, but the check is incomplete':'No violations found';
   const meta=[`${d.items.length} cargo lines`,`${dg} dangerous goods identified`];
   if(unk.length)meta.push(`${unk.length} need${unk.length>1?'':'s'} a human`);if(mis.length)meta.push(`${mis.length} declaration${mis.length>1?'s':''} to check`);
+  if(d.items.length&&d.items.every(i=>i.cached))meta.push('saved answers for this built-in example');
   let h=`<div class="verdict ${cls}"><div class="vi">${IC[cls]}</div><div><div class="big">${title}</div><div class="meta">${meta.join(' · ')}</div></div></div>`;
   const byC={};d.items.forEach(i=>{const k=i.container||'No container';(byC[k]=byC[k]||[]).push(i)});
   const badC=new Set(viol.map(f=>d.items[idx(f.a)-1]?.container));

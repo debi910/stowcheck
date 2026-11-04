@@ -1,4 +1,6 @@
 """StowCheck web API (FastAPI). Runs locally with `uvicorn api.index:app` and on Vercel as a Python function."""
+import hashlib
+import json
 import re
 import sys
 from pathlib import Path
@@ -16,6 +18,19 @@ RULES = Rules()
 INDEX = Index(RULES)
 UN_RE = re.compile(r"\b(UN|NA)\s?(\d{4})\b", re.I)
 
+# Saved answers for the built-in examples, produced by this same pipeline (see eval/build_demo_cache.py).
+# Free AI tiers allow only a few requests a minute, so the examples answer instantly; anything else calls the AI.
+_CACHE_PATH = Path(__file__).resolve().parent.parent / "data" / "demo_cache.json"
+DEMO_CACHE = json.load(open(_CACHE_PATH)) if _CACHE_PATH.exists() else {"identify": {}, "extract": {}}
+
+
+def _norm(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def _doc_key(text: str) -> str:
+    return hashlib.sha256(_norm(text).encode()).hexdigest()[:16]
+
 
 class Line(BaseModel):
     description: str
@@ -28,6 +43,9 @@ class Manifest(BaseModel):
 
 
 def _identify(description: str) -> dict:
+    hit = DEMO_CACHE["identify"].get(_norm(description))
+    if hit:
+        return {**hit, "cached": True}
     typed = UN_RE.search(description)
     if not typed:
         try:
@@ -93,12 +111,15 @@ def check(m: Manifest):
     if m.document_text.strip():
         try:
             from stowcheck.llm import extract_lines
+            hit = DEMO_CACHE["extract"].get(_doc_key(m.document_text))
+            if hit:
+                return {"extracted": hit, "cached": True}
             return {"extracted": extract_lines(m.document_text)}
         except Exception as e:
             return {"extracted": [], "error": str(e)[:200]}
     from concurrent.futures import ThreadPoolExecutor
     lines = m.lines[:25]
-    with ThreadPoolExecutor(8) as ex:
+    with ThreadPoolExecutor(3) as ex:  # free tiers rate-limit bursts
         idents = list(ex.map(_identify, [ln.description for ln in lines]))
     items, cargos = [], []
     for i, (ln, ident) in enumerate(zip(lines, idents)):
@@ -109,7 +130,8 @@ def check(m: Manifest):
                       "class": entry.hazard_class if entry else None, "groups": ident.get("groups", []),
                       "confidence": ident.get("confidence"), "abstain": ident.get("abstain"),
                       "is_dangerous": ident.get("is_dangerous"), "evidence": ident.get("evidence", ""),
-                      "error": ident.get("error"), "mismatch": ident.get("mismatch")})
+                      "error": ident.get("error"), "mismatch": ident.get("mismatch"),
+                      "cached": ident.get("cached", False)})
         if entry:
             cargos.append(Cargo(label=label, un=entry.un, packing_group=entry.packing_group,
                                 groups=ident.get("groups", []), container=ln.container))
