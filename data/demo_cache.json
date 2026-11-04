@@ -1,0 +1,373 @@
+{
+ "model": "gemma-4-26b-a4b-it (eval/results/sample_manifest_check_gemma.json)",
+ "identify": {
+  "swimming pool chlorine tablets 90%": {
+   "groups": [
+    "hypochlorites"
+   ],
+   "confidence": 0.8,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "chlorine tablets 90%",
+   "mismatch": null,
+   "un_number": "UN1748"
+  },
+  "automotive batteries, lead acid, wet": {
+   "groups": [
+    "acids",
+    "lead"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Automotive batteries, lead acid, wet",
+   "mismatch": null,
+   "un_number": "UN2794"
+  },
+  "plastic garden chairs": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": false,
+   "evidence": "Plastic garden chairs are finished manufactured articles (furniture) and do not fall under the classification of dangerous goods or raw plastic molding compounds.",
+   "mismatch": null,
+   "un_number": null
+  },
+  "eau de parfum 100 ml glass bottles, alcohol based": {
+   "groups": [
+    "organic materials"
+   ],
+   "confidence": 0.7,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "alcohol based",
+   "mismatch": null,
+   "un_number": "UN1993"
+  },
+  "hydrogen peroxide solution 50%": {
+   "groups": [
+    "peroxides"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Hydrogen peroxide solution 50%",
+   "mismatch": null,
+   "un_number": "UN2014"
+  },
+  "cotton bath towels": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": false,
+   "evidence": "Cotton bath towels are finished manufactured articles (textiles) and not raw bulk materials; per the rules, finished articles should not be matched to raw-material entries.",
+   "mismatch": null,
+   "un_number": null
+  },
+  "power banks 20000 mah, lithium ion": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "lithium ion",
+   "mismatch": null,
+   "un_number": "UN3480"
+  },
+  "e-bikes with lithium ion battery fitted": {
+   "groups": [],
+   "confidence": 0.9,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "E-bikes with lithium ion battery fitted",
+   "mismatch": null,
+   "un_number": "UN3171"
+  },
+  "bicycle helmets": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": false,
+   "evidence": "Bicycle helmets are finished manufactured articles and are not classified as dangerous goods under 49 CFR.",
+   "mismatch": null,
+   "un_number": null
+  },
+  "hydrochloric acid 33% technical grade": {
+   "groups": [
+    "acids"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Hydrochloric acid",
+   "mismatch": null,
+   "un_number": "UN1789"
+  },
+  "sodium hydroxide flakes 99% (caustic soda)": {
+   "groups": [
+    "alkaline compounds",
+    "sodium compounds"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Sodium hydroxide flakes",
+   "mismatch": null,
+   "un_number": "UN1823"
+  },
+  "ceramic floor tiles": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": false,
+   "evidence": "Ceramic floor tiles are finished manufactured articles and are not considered dangerous goods under 49 CFR.",
+   "mismatch": null,
+   "un_number": null
+  },
+  "calcium chloride flakes, un1748": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "UN number typed in the description",
+   "mismatch": "Declared UN1748, but the description reads like ordinary goods. Check the declaration.",
+   "un_number": "UN1748"
+  },
+  "ammonium nitrate fertilizer 34% n": {
+   "groups": [
+    "ammonium compounds"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Ammonium nitrate fertilizer",
+   "mismatch": null,
+   "un_number": "UN2067"
+  },
+  "diesel engine spare parts": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": false,
+   "evidence": "The cargo consists of 'spare parts', which are components of an engine, not the fuel itself (Candidates 1-3) nor the complete engine/machinery (Candidates 4-6). Spare parts are generally non-hazardous manufactured articles.",
+   "mismatch": null,
+   "un_number": null
+  },
+  "paint, solvent based": {
+   "groups": [
+    "organic materials"
+   ],
+   "confidence": 0.9,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Paint, solvent based",
+   "mismatch": null,
+   "un_number": "UN1263"
+  },
+  "acetone": {
+   "groups": [
+    "organic materials"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Acetone",
+   "mismatch": null,
+   "un_number": "UN1090"
+  },
+  "safety matches": {
+   "groups": [],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": true,
+   "evidence": "Safety matches",
+   "mismatch": null,
+   "un_number": "UN1944"
+  },
+  "assorted industrial chemicals, mixed pallet": {
+   "groups": [],
+   "confidence": 0.0,
+   "abstain": true,
+   "is_dangerous": null,
+   "evidence": "The description 'Assorted industrial chemicals' is too vague to identify specific chemical identities, hazard classes, or properties required for classification.",
+   "mismatch": null,
+   "un_number": null
+  },
+  "basmati rice": {
+   "groups": [
+    "foodstuffs"
+   ],
+   "confidence": 1.0,
+   "abstain": false,
+   "is_dangerous": false,
+   "evidence": "Basmati rice",
+   "mismatch": null,
+   "un_number": null
+  }
+ },
+ "extract": {
+  "68e84c3409a4fcc3": [
+   {
+    "description": "Swimming pool chlorine tablets 90%",
+    "container": "MSCU7712345"
+   },
+   {
+    "description": "Automotive batteries, lead acid, wet",
+    "container": "MSCU7712345"
+   },
+   {
+    "description": "Plastic garden chairs",
+    "container": "MSCU7712345"
+   },
+   {
+    "description": "Eau de parfum 100 ml glass bottles, alcohol based",
+    "container": "MSCU7712346"
+   },
+   {
+    "description": "Hydrogen peroxide solution 50%",
+    "container": "MSCU7712346"
+   },
+   {
+    "description": "Cotton bath towels",
+    "container": "MSCU7712346"
+   },
+   {
+    "description": "Power banks 20000 mAh, lithium ion",
+    "container": "TGHU3345671"
+   },
+   {
+    "description": "E-bikes with lithium ion battery fitted",
+    "container": "TGHU3345671"
+   },
+   {
+    "description": "Bicycle helmets",
+    "container": "TGHU3345671"
+   },
+   {
+    "description": "Hydrochloric acid 33% technical grade",
+    "container": "TGHU3345672"
+   },
+   {
+    "description": "Sodium hydroxide flakes 99% (caustic soda)",
+    "container": "TGHU3345672"
+   },
+   {
+    "description": "Ceramic floor tiles",
+    "container": "TGHU3345672"
+   },
+   {
+    "description": "Calcium chloride flakes, UN1748",
+    "container": "CAIU5567890"
+   },
+   {
+    "description": "Ammonium nitrate fertilizer 34% N",
+    "container": "CAIU5567890"
+   },
+   {
+    "description": "Diesel engine spare parts",
+    "container": "CAIU5567890"
+   },
+   {
+    "description": "Paint, solvent based",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Acetone",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Safety matches",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Assorted industrial chemicals, mixed pallet",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Basmati rice",
+    "container": "CAIU5567891"
+   }
+  ],
+  "dd499c54c5c581ae": [
+   {
+    "description": "Swimming pool chlorine tablets 90%",
+    "container": "MSCU7712345"
+   },
+   {
+    "description": "Automotive batteries, lead acid, wet",
+    "container": "MSCU7712345"
+   },
+   {
+    "description": "Plastic garden chairs",
+    "container": "MSCU7712345"
+   },
+   {
+    "description": "Eau de parfum 100 ml glass bottles, alcohol based",
+    "container": "MSCU7712346"
+   },
+   {
+    "description": "Hydrogen peroxide solution 50%",
+    "container": "MSCU7712346"
+   },
+   {
+    "description": "Cotton bath towels",
+    "container": "MSCU7712346"
+   },
+   {
+    "description": "Power banks 20000 mAh, lithium ion",
+    "container": "TGHU3345671"
+   },
+   {
+    "description": "E-bikes with lithium ion battery fitted",
+    "container": "TGHU3345671"
+   },
+   {
+    "description": "Bicycle helmets",
+    "container": "TGHU3345671"
+   },
+   {
+    "description": "Hydrochloric acid 33% technical grade",
+    "container": "TGHU3345672"
+   },
+   {
+    "description": "Sodium hydroxide flakes 99% (caustic soda)",
+    "container": "TGHU3345672"
+   },
+   {
+    "description": "Ceramic floor tiles",
+    "container": "TGHU3345672"
+   },
+   {
+    "description": "Calcium chloride flakes, UN1748",
+    "container": "CAIU5567890"
+   },
+   {
+    "description": "Ammonium nitrate fertilizer 34% N",
+    "container": "CAIU5567890"
+   },
+   {
+    "description": "Diesel engine spare parts",
+    "container": "CAIU5567890"
+   },
+   {
+    "description": "Paint, solvent based",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Acetone",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Safety matches",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Assorted industrial chemicals, mixed pallet",
+    "container": "CAIU5567891"
+   },
+   {
+    "description": "Basmati rice",
+    "container": "CAIU5567891"
+   }
+  ]
+ }
+}

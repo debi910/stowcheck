@@ -238,10 +238,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       </div>
     </div>
     <div class="bay fade" style="animation-delay:120ms" aria-label="Bay plan with one container flagged">
-      <div class="bayhead"><span>Bay 14 · on deck</span><span class="mono">example result</span></div>
+      <div class="bayhead"><span>Bay 14 · on deck</span><span class="mono">sample packing list</span></div>
       <div class="baygrid" id="baygrid"></div>
       <div class="hull"></div>
-      <div class="callout"><span class="sq"></span><div><b>Hydrogen peroxide 50% and perfume share MSKU2</b><br><span class="mono">49 CFR 176.83(b): Class 5.1 vs Class 3 → separated from</span></div></div>
+      <div class="callout"><span class="sq"></span><div><b>Hydrogen peroxide 50% and perfume share MSCU7712346</b><br><span class="mono">49 CFR 176.83(b): Class 5.1 vs Class 3 → separated from</span></div></div>
     </div>
   </header>
 
@@ -333,7 +333,7 @@ const EVALS=[
    rows:[['Model alone',.48,'48'],['Table, no AI tags',.88,'88'],['StowCheck',1,'100']],note:'The model alone answered 72 and got 48 right; 24 answers were too lenient. The key comes from the same tables the engine reads, so this shows the AI tags close the gap, not that the engine is smarter.',src:'eval/build_test_a.py'},
 ];
 
-const SAMPLE=[["Swimming pool chlorine tablets, 25kg drums","MSKU1"],["Car batteries, lead acid, filled with acid","MSKU1"],["Eau de parfum 100ml, alcohol based","MSKU2"],["Hydrogen peroxide 50% technical grade","MSKU2"],["Ammonia, anhydrous UN1005 cylinders","MSKU3"],["Hydrochloric acid 30% industrial cleaner","MSKU4"],["Cotton T-shirts","MSKU4"],["Household cleaning products (assorted)","MSKU5"]];
+const SAMPLE=[["Swimming pool chlorine tablets 90%", "MSCU7712345"], ["Automotive batteries, lead acid, wet", "MSCU7712345"], ["Plastic garden chairs", "MSCU7712345"], ["Eau de parfum 100 ml glass bottles, alcohol based", "MSCU7712346"], ["Hydrogen peroxide solution 50%", "MSCU7712346"], ["Cotton bath towels", "MSCU7712346"], ["Power banks 20000 mAh, lithium ion", "TGHU3345671"], ["E-bikes with lithium ion battery fitted", "TGHU3345671"], ["Bicycle helmets", "TGHU3345671"], ["Hydrochloric acid 33% technical grade", "TGHU3345672"], ["Sodium hydroxide flakes 99% (caustic soda)", "TGHU3345672"], ["Ceramic floor tiles", "TGHU3345672"], ["Calcium chloride flakes, UN1748", "CAIU5567890"], ["Ammonium nitrate fertilizer 34% N", "CAIU5567890"], ["Diesel engine spare parts", "CAIU5567890"], ["Paint, solvent based", "CAIU5567891"], ["Acetone", "CAIU5567891"], ["Safety matches", "CAIU5567891"], ["Assorted industrial chemicals, mixed pallet", "CAIU5567891"], ["Basmati rice", "CAIU5567891"]];
 /* hazard placard colours: used for meaning, not decoration */
 const HZ={"1":["#f97316","#111"],"2.1":["#dc2626","#fff"],"2.2":["#16a34a","#fff"],"2.3":["#fff","#111"],"3":["#dc2626","#fff"],"4.1":["#fff","#dc2626"],"4.2":["#fff","#dc2626"],"4.3":["#2563eb","#fff"],"5.1":["#facc15","#111"],"5.2":["#facc15","#dc2626"],"6.1":["#fff","#111"],"6.2":["#fff","#111"],"7":["#fde047","#111"],"8":["#18181b","#fff"],"9":["#fff","#111"]};
 function hz(c){if(!c)return["#f4f4f5","#71717a"];if(c.startsWith("1"))return HZ["1"];return HZ[c]||HZ[c.split(".")[0]]||["#f4f4f5","#111"]}

@@ -16,10 +16,7 @@ sys.path.insert(0, str(ROOT))
 import api.index as api  # noqa: E402
 
 api.DEMO_CACHE = {"identify": {}, "extract": {}}  # build from scratch, never from old answers
-EXAMPLE = ["Swimming pool chlorine tablets, 25kg drums", "Car batteries, lead acid, filled with acid",
-           "Eau de parfum 100ml, alcohol based", "Hydrogen peroxide 50% technical grade",
-           "Ammonia, anhydrous UN1005 cylinders", "Hydrochloric acid 30% industrial cleaner", "Cotton T-shirts",
-           "Household cleaning products (assorted)"]
+EXAMPLE = []  # the page's default manifest is the sample packing list below
 rows = list(csv.DictReader(open(ROOT / "public/samples/sample_manifest.csv")))
 sample = [{"description": r["Description of goods"], "container": r["Container"]} for r in rows]
 descs = EXAMPLE + [s["description"] for s in sample]

@@ -85,6 +85,12 @@ For context only: the external [DGEval benchmark](https://arxiv.org/abs/2608.210
 - Words alone cannot expose a deliberately false declaration (see Test C).
 - This is a research demo. It is not for operational use.
 
+## About the live demo's free AI tier
+
+The demo runs on Groq's free tier, which allows about 8,000 tokens a minute and 200,000 a day per model. To keep the demo usable:
+- The built-in sample packing list answers from `data/demo_cache.json`. These are saved answers from a real run of the same pipeline (Gemma 4, `eval/results/sample_manifest_check_gemma.json`, built by `eval/build_demo_cache.py`), and the page says so when it shows them. Any line you type or upload that differs goes to the AI live.
+- Live checks run three lines at a time, wait as long as the provider asks after a rate limit, and move to another free model when one model's daily quota runs out.
+
 ## Run it
 
 ```bash
