@@ -29,14 +29,14 @@ The AI does the language work and the code applies the rules.
 
 Each test runs a free model alone and the same model inside StowCheck. Two models were tested: **gpt-oss-120b on Groq**, which is the model behind the live demo, and **Gemma 4 26B** through the Gemini API free tier. Requests that hit free-tier rate limits or timeouts were asked again with the same prompt, and the result files record which ones. Data, scripts and every answer are in `eval/` (Groq results are the `groq_*` files).
 
-**Summary on the demo model (gpt-oss-120b):**
+**Summary: two free models, both reach 21 / 24 on the held-out set with StowCheck.** gpt-oss-120b is the live demo's model.
 
-| Test | Model alone | StowCheck |
-|---|---|---|
-| Held-out, right UN number (24 clear DG, run once) | 9 / 24 (37.5%) | **21 / 24 (87.5%)** |
-| Development set, right UN number (39 clear DG) | 35.9% | **79.5%** |
-| Development set, dangerous cargo confidently called safe | 4 | **0** |
-| Real incident declarations caught (7) | 5 | 4 |
+| Test | gpt-oss alone | Gemma 4 alone | StowCheck (either model) |
+|---|---|---|---|
+| Held-out, right UN number (24 clear DG, run once) | 9 / 24 | 15 / 24 | **21 / 24** with both |
+| Development set, right UN number (39 clear DG) | 35.9% | 66.7% | **79.5%** (gpt-oss), **87.2%** (Gemma) |
+| Development set, dangerous cargo confidently called safe | 4 | 2 | **0** with both |
+| Real incident declarations caught (7) | 5 | 4 | 4 with both |
 
 The Gemma 4 details follow.
 

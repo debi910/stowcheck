@@ -308,7 +308,7 @@ const REPO='https://github.com/debi910/stowcheck/blob/main/';
 /* evaluation numbers, copied from eval/results/*.json */
 const STATS=[
   {b:'~50%',s:'Best frontier-model score on dangerous-goods stowage questions',m:'External benchmark: <a href="https://arxiv.org/abs/2608.21036" target="_blank" rel="noopener">DGEval, 2026</a>'},
-  {b:'38% → 88%',s:'Right UN number from plain cargo text, held-out set',m:'Demo model gpt-oss-120b, alone vs inside StowCheck · n = 24 · <a href="#eval">details</a>'},
+  {b:'9 or 15 → 21',s:'Right UN number out of 24 on the held-out set, two free models',m:'gpt-oss-120b (demo) or Gemma 4 alone → either inside StowCheck · <a href="#eval">details</a>'},
   {b:'24 → 0',s:'Unsafe segregation answers (too lenient) on 100 cargo pairs',m:'Gemma 4, alone vs inside StowCheck · <a href="#eval">details</a>'},
 ];
 const FAILS_D=`<div class="h"><span>Where StowCheck missed (held-out, demo model)</span><span></span><span></span></div>
