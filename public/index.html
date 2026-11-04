@@ -174,7 +174,7 @@ details[open] .chev{transform:rotate(90deg)}
 .ev.wide{grid-column:1/-1}
 .ev h4{margin:0;font-size:15px;font-weight:600}
 .ev .d{font-size:13px;color:var(--mut);margin:2px 0 14px}
-.cmp{display:grid;grid-template-columns:140px 1fr 72px;gap:12px;align-items:center;margin:8px 0;font-size:13.5px}
+.cmp{display:grid;grid-template-columns:160px 1fr 72px;gap:12px;align-items:center;margin:8px 0;font-size:13.5px}
 .cmp .l{color:var(--fg2)}
 .cmp .v{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
 .track{height:8px;border-radius:99px;background:var(--sub2);overflow:hidden}
@@ -209,7 +209,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .reveal.seen{opacity:1;transform:none}
 
 @media (max-width:860px){.hero{grid-template-columns:1fr;padding:44px 0 40px;gap:32px}.stats,.how,.evals{grid-template-columns:1fr}.stat,.hw{border-left:0;border-top:1px solid var(--line)}.stat:first-child,.hw:first-child{border-top:0}.hide-s{display:none}.ev.wide{grid-column:auto}}
-@media (max-width:560px){.row,.thead{grid-template-columns:1fr 96px 28px}.num,.thead .n0{display:none}.legend{display:none}.cmp{grid-template-columns:100px 1fr 60px}}
+@media (max-width:560px){.row,.thead{grid-template-columns:1fr 96px 28px}.num,.thead .n0{display:none}.legend{display:none}.cmp{grid-template-columns:118px 1fr 56px;font-size:12.5px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -285,7 +285,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </section>
 
   <section id="eval" class="reveal">
-    <div class="sh"><div class="kicker">Evaluation</div><h2>Measured on the same free model</h2><p class="sub">Gemma 4 26B on both sides: the model alone vs the model inside StowCheck. Data, scripts and every answer are in the repo. The live demo runs a different free model (Groq).</p></div>
+    <div class="sh"><div class="kicker">Evaluation</div><h2>Measured on two free models</h2><p class="sub">Each model is tested alone and inside StowCheck: gpt-oss-120b on Groq (the model behind the live demo) and Gemma 4 26B. Data, scripts and every answer are in the repo.</p></div>
     <div class="evals" id="evals"></div>
   </section>
 </div></main>
@@ -308,28 +308,28 @@ const REPO='https://github.com/debi910/stowcheck/blob/main/';
 /* evaluation numbers, copied from eval/results/*.json */
 const STATS=[
   {b:'~50%',s:'Best frontier-model score on dangerous-goods stowage questions',m:'External benchmark: <a href="https://arxiv.org/abs/2608.21036" target="_blank" rel="noopener">DGEval, 2026</a>'},
-  {b:'63% → 88%',s:'Right UN number from plain cargo text, same free model',m:'n = 24 · held-out set, run once · <a href="#eval">details</a>'},
-  {b:'24 → 0',s:'Unsafe segregation answers (too lenient) on 100 cargo pairs',m:'Same free model, alone vs inside StowCheck · <a href="#eval">details</a>'},
+  {b:'38% → 88%',s:'Right UN number from plain cargo text, held-out set',m:'Demo model gpt-oss-120b, alone vs inside StowCheck · n = 24 · <a href="#eval">details</a>'},
+  {b:'24 → 0',s:'Unsafe segregation answers (too lenient) on 100 cargo pairs',m:'Gemma 4, alone vs inside StowCheck · <a href="#eval">details</a>'},
 ];
-const FAILS_D=`<div class="h"><span>Where StowCheck missed (held-out)</span><span></span><span></span></div>
+const FAILS_D=`<div class="h"><span>Where StowCheck missed (held-out, demo model)</span><span></span><span></span></div>
+  <div><span>Xylene</span><span class="mono">UN1307</span><span class="q-t">said dangerous, no row</span></div>
   <div><span>Sodium hypochlorite solution</span><span class="mono">UN1791</span><span class="q-t">said dangerous, no row</span></div>
   <div><span>Ammonia solution</span><span class="mono">UN2672</span><span class="q-t">said dangerous, no row</span></div>
-  <div><span>Carbon dioxide cylinders</span><span class="mono">UN1013</span><span class="q-t">API error, counted wrong</span></div>
   <div><span>“Car parts (used)”</span><span class="mono">vague</span><span class="no-t">called not dangerous</span></div>`;
 const FAILS_C=`<div class="h"><span>Declared as</span><span>Really was</span><span>StowCheck</span></div>
   <div><span>“Coconut pellets”</span><span>Charcoal, UN1361</span><span class="no-t">cleared</span></div>
   <div><span>“Dolls”</span><span>Calcium hypochlorite</span><span class="no-t">cleared</span></div>
   <div><span>“Calcium chloride”</span><span>Calcium hypochlorite</span><span class="no-t">cleared</span></div>
-  <div><span>“Disinfectant”, “Whitening agent”, “Organic surface”</span><span>Calcium hypochlorite</span><span class="q-t">sent to a human</span></div>
+  <div><span>“Disinfectant”, “Whitening agent”, “Organic surface”</span><span>Calcium hypochlorite</span><span class="q-t">sent to a human or flagged</span></div>
   <div><span>“Chlorinated paraffin wax”</span><span>Same, undeclared</span><span class="ok-t">flagged</span></div>`;
 const EVALS=[
-  {wide:true,t:'Held-out test · right UN number for clear dangerous goods',d:'30 new descriptions (turpentine, e-bikes, zinc dust, steel coils…) written after the prompts were frozen and run once. Same Gemma 4 model on both sides.',
-   rows:[['Model alone',.625,'15 / 24'],['StowCheck',.875,'21 / 24']],fails:FAILS_D,note:'Neither side called a dangerous cargo safe. The first attempt hit 9 API timeouts and was re-run at lower load; both runs are published (first run: 13 vs 16 of 24).',src:'eval/test_d_heldout.csv'},
+  {wide:true,t:'Held-out test · right UN number for clear dangerous goods',d:'30 new descriptions (turpentine, e-bikes, zinc dust, steel coils…) written after the prompts were frozen, and run once per model.',
+   rows:[['gpt-oss alone',.375,'9 / 24'],['gpt-oss + StowCheck',.875,'21 / 24'],['Gemma 4 alone',.625,'15 / 24'],['Gemma 4 + StowCheck',.875,'21 / 24']],fails:FAILS_D,note:'No side called a dangerous cargo safe. Requests that hit free-tier rate limits were asked again with the same prompt; Gemma\'s first attempt is also published (13 vs 16 of 24).',src:'eval/test_d_heldout.csv'},
   {wide:true,t:'Real incidents · what shippers actually declared',d:'7 declarations from container-ship fire investigations (Yantian Express, KMTC Hong Kong, Gard case files). The real cargo was dangerous every time.',
-   rows:[['Model alone',4/7,'4 / 7'],['StowCheck',4/7,'4 / 7']],fails:FAILS_C,note:'No better than the model alone. A deliberately false description can\'t be caught from its words; that is why StowCheck also checks a typed UN number against its description and never reports “safe” while any line is unsure.',src:'eval/test_c_incidents.csv'},
+   rows:[['gpt-oss alone',5/7,'5 / 7'],['gpt-oss + StowCheck',4/7,'4 / 7'],['Gemma 4 alone',4/7,'4 / 7'],['Gemma 4 + StowCheck',4/7,'4 / 7']],fails:FAILS_C,note:'No better than the model alone (gpt-oss alone also flagged “Calcium chloride”, which on its own is not regulated). A deliberately false description can\'t be caught from its words; that is why StowCheck also checks a typed UN number against its description and never reports “safe” while any line is unsure.',src:'eval/test_c_incidents.csv'},
   {t:'Development set · right UN number',d:'39 clear dangerous goods. The prompts were written while looking at this set.',
-   rows:[['Model alone',.667,'67%'],['StowCheck',.872,'87%']],note:'Hard but decidable items (charcoal, fish meal, resin hardener): 1 of 7 alone, 6 of 7 with StowCheck.',src:'eval/test_b_descriptions.csv'},
-  {t:'Segregation call · 100 cargo pairs',d:'Answer key from the 49 CFR tables, out of 100 with timeouts counted wrong.',
+   rows:[['gpt-oss alone',.359,'36%'],['gpt-oss + StowCheck',.795,'79%'],['Gemma 4 alone',.667,'67%'],['Gemma 4 + StowCheck',.872,'87%']],note:'Dangerous cargo confidently called safe: 4 (gpt-oss alone) and 2 (Gemma alone) vs 0 with StowCheck. Hard items: 0 and 1 of 7 alone, 5 and 6 of 7 with StowCheck.',src:'eval/test_b_descriptions.csv'},
+  {t:'Segregation call · 100 cargo pairs',d:'Gemma 4. Answer key from the 49 CFR tables, out of 100 with timeouts counted wrong.',
    rows:[['Model alone',.48,'48'],['Table, no AI tags',.88,'88'],['StowCheck',1,'100']],note:'The model alone answered 72 and got 48 right; 24 answers were too lenient. The key comes from the same tables the engine reads, so this shows the AI tags close the gap, not that the engine is smarter.',src:'eval/build_test_a.py'},
 ];
 
@@ -343,7 +343,7 @@ const dia=c=>{const[b,f]=hz(c);return `<span class="dia" style="background:${b};
   h+=`<div class="cell${hot?' hot':dg?' dg':''}" style="animation-delay:${200+(k++)*35}ms"></div>`}$('#baygrid').innerHTML=h})();
 $('#stats').innerHTML=STATS.map(s=>`<div class="stat"><b>${s.b}</b><span>${s.s}</span><small>${s.m}</small></div>`).join('');
 $('#evals').innerHTML=EVALS.map(e=>`<div class="ev${e.wide?' wide':''}"><h4>${e.t}</h4><p class="d">${e.d}</p>
-  ${e.rows.map(([l,v,t],i)=>`<div class="cmp"><span class="l">${l}</span><div class="track"><div class="fill ${i===e.rows.length-1?'ours':'base'}" style="--v:${v}"></div></div><span class="v">${t}</span></div>`).join('')}
+  ${e.rows.map(([l,v,t],i)=>`<div class="cmp"><span class="l">${l}</span><div class="track"><div class="fill ${/StowCheck/.test(l)?'ours':'base'}" style="--v:${v}"></div></div><span class="v">${t}</span></div>`).join('')}
   ${e.fails?`<div class="fails">${e.fails}</div>`:''}<small>${e.note} <a href="${REPO}${e.src}" target="_blank" rel="noopener">Data</a></small></div>`).join('');
 
 let n=0;
